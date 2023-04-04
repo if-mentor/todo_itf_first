@@ -40,7 +40,7 @@ Todo リストの作成を通じて、React.js、Next.js の基礎、Git,github 
 
 ## 環境構築手順
 
-1. `git clone https://github.com/if-mentor/next_todo_8.git`
+1. `git clone https://github.com/if-mentor/todo_itf_first`
 2. **github アカウントを 2 つ以上持っている方のみ、確認**
    - clone したリポジトリのディレクトリに移動
    - `git config --list`を実行する
