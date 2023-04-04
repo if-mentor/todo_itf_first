@@ -15,7 +15,7 @@ const Page404: React.FC = () => {
                 <p className='text-lg font-bold mb-10'>This is not web page you are looking for.</p>
                 <Link 
                     href='/'
-                    className='border border-black bg-red-100 rounded-full px-6 pb-2 pt-1'
+                    className='border border-black bg-red-100 rounded-full px-6 pb-2 pt-1 font-bold'
                 >
                     Top
                 </Link>
