@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Layout = () => {
+const Header = () => {
   return (
     <header className='w-full bg-green-400 text-4xl font-bold'>
       <div className='max-w-5xl mx-auto p-2'>
@@ -11,4 +11,4 @@ const Layout = () => {
   )
 }
 
-export default Layout
+export default Header
