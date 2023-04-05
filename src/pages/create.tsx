@@ -8,7 +8,6 @@ import React from "react";
 const create = () => {
   return (
     <div>
-      <Header />
       <NewTodoTop />
       <InputTitle />
       <InputDetail />
