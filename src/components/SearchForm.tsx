@@ -3,7 +3,7 @@ import React from 'react'
 const SearchForm = () => {
   return (
     <div className='w-full font-bold'>
-        <div className='text-2xl font-bold max-w-5xl mx-auto p-2 flex justify-between'>
+        <div className='text-2xl font-bold max-w-5xl mx-auto py-2 flex justify-between'>
             <h2>TODO LIST</h2>
             <div className='border border-solid border-gray rounded-full px-2 mt-5 bg-slate-300'>
                 <button>
@@ -13,7 +13,7 @@ const SearchForm = () => {
                 </button>
             </div>
         </div>
-        <div className='flex  space-x-5 max-w-5xl mx-auto p-2'>
+        <div className='flex  space-x-5 max-w-5xl mx-auto py-2'>
             <div>
                 <p>SEARCH</p>
                 <div className='border border-solid border-black rounded-md px-2 py-0.5'>
