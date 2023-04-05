@@ -5,7 +5,6 @@ import TodoList from '@/components/TodoList'
 export default function Home() {
   return (
     <>
-      <Header />
       <SearchForm />
       <TodoList />
     </>
