@@ -7,7 +7,6 @@ const Page404: React.FC = () => {
     const router = useRouter();
     return (
         <>
-            <Header />
             <div className='w-full text-center'>
                 <p className='font-["roboto"] text-4xl font-bold my-10'>
                     404
