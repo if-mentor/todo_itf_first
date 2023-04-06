@@ -1,5 +1,3 @@
-import React from 'react'
-
 type Post = {
   task: string;
   status: 'NOT STARTED' | 'DOING' | 'DONE';
