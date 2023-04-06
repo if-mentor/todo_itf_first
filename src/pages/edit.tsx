@@ -1,3 +1,4 @@
+import DetailTodoFooter from "@/components/NewAndEditPageParts/DetailTodoFooter";
 import InputDetail from "@/components/NewAndEditPageParts/InputDetail";
 import InputTitle from "@/components/NewAndEditPageParts/InputTitle";
 import NewTodoFooter from "@/components/NewAndEditPageParts/NewTodoFooter";
@@ -10,7 +11,7 @@ const create = () => {
       <TodoTop title="EDIT TODO"/>
       <InputTitle labelName="TITLE"/>
       <InputDetail labelName="DETAIL"/>
-      <NewTodoFooter />
+      <DetailTodoFooter />
     </div>
   );
 };
