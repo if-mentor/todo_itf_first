@@ -66,8 +66,7 @@ const TodoList: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {posts.map((post: Post) => (
-           
+          {posts.map((post: Post) => ( 
             <tr className='border-b'>
             <td className='text-left py-3'>
               <p className='text-sm'>{post.task}</p>
