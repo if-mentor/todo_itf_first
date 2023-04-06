@@ -1,5 +1,3 @@
-import React from "react";
-
 const DetailTodoFooter = () => {
   return (
     <div className="w-full font-bold">

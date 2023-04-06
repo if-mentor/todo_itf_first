@@ -1,5 +1,3 @@
-import React from "react";
-
 type InputDetailProps = {
   // inputTitle.tsxと同じ名前なので、何か良い案があればください！
   labelName: string;
