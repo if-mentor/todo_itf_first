@@ -1,9 +1,7 @@
-import React from 'react'
-
 type Post = {
   task: string;
-  status: string;
-  priority: string;
+  status: 'NOT STARTED' | 'DOING' | 'DONE';
+  priority: 'High' | 'Middle' | 'Low';
   created_at: string;
   updated_at: string;
 }
@@ -67,7 +65,8 @@ const TodoList: React.FC = () => {
         </thead>
         <tbody>
           {posts.map((post: Post) => (
-            <tr className='border-b'>
+            // keyは後で修正
+            <tr className='border-b' key={post.task}>
             <td className='text-left py-3'>
               <p className='text-sm'>{post.task}</p>
             </td>
