@@ -1,10 +1,7 @@
-import Header from '@/components/Header'
 import Link from 'next/link';
-import { useRouter } from 'next/router'
 import React from 'react'
 
 const Page404: React.FC = () => {
-    const router = useRouter();
     return (
         <>
             <div className='w-full text-center'>
