@@ -1,15 +1,15 @@
-import InputDetail from "@/components/InputDetail";
-import InputTitle from "@/components/InputTitle";
-import NewTodoFooter from "@/components/NewTodoFooter";
-import NewTodoTop from "@/components/NewTodoTop";
+import InputDetail from "@/components/NewAndEditPageParts/InputDetail";
+import InputTitle from "@/components/NewAndEditPageParts/InputTitle";
+import NewTodoFooter from "@/components/NewAndEditPageParts/NewTodoFooter";
+import TodoTop from "@/components/NewAndEditPageParts/TodoTop";
 import React from "react";
 
 const create = () => {
   return (
     <div>
-      <NewTodoTop />
-      <InputTitle />
-      <InputDetail />
+      <TodoTop  title="NEW TODO"/>
+      <InputTitle  labelName="TITLE"/>
+      <InputDetail labelName="DETAIL"/>
       <NewTodoFooter />
     </div>
   );

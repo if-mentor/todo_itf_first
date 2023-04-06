@@ -1,10 +1,14 @@
 import React from "react";
 
-const InputTitle = () => {
+type InputTitleProps = {
+  labelName: string; 
+}
+
+const InputTitle: React.FC<InputTitleProps> = ({labelName}) => {
   return (
     <div className="w-full font-bold">
       <div className="max-w-5xl mx-auto p-2">
-        <label className="text-2xl">TITLE</label>
+        <label className="text-2xl">{labelName}</label>
         <input
           type="text"
           placeholder="Text"
