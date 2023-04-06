@@ -1,9 +1,7 @@
-import React from 'react'
-
 const SearchForm = () => {
   return (
     <div className='w-full font-bold'>
-        <div className='text-2xl font-bold max-w-5xl mx-auto py-2 flex justify-between'>
+        <div className='text-2xl max-w-5xl mx-auto py-2 flex justify-between'>
             <h2>TODO LIST</h2>
             <div className='border border-solid border-gray rounded-full px-2 mt-5 bg-slate-300'>
                 <button>
