@@ -14,7 +14,7 @@ const NewTodoFooter = () => {
           <button className="text-[18px] w-28 h-10 border border-black rounded-3xl bg-[#fed7e2] mr-2">
             DRAFT
           </button>
-          <button className="text-[18px] w-28 h-10 border border-black rounded-3xl bg-[#25855A] ">
+          <button className="text-white text-[18px] w-28 h-10 border border-black rounded-3xl bg-[#25855A] ">
             CREATE
           </button>
         </div>

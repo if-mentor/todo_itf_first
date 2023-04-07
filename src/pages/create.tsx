@@ -8,8 +8,8 @@ const create = () => {
   return (
     <div>
       <TodoTop  title="NEW TODO"/>
-      <InputTitle  labelName="TITLE"/>
-      <InputDetail labelName="DETAIL"/>
+      <InputTitle  />
+      <InputDetail />
       <NewTodoFooter />
     </div>
   );

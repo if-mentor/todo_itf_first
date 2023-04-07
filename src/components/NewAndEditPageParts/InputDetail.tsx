@@ -1,13 +1,8 @@
-type InputDetailProps = {
-  // inputTitle.tsxと同じ名前なので、何か良い案があればください！
-  labelName: string;
-}
-
-const InputDetail: React.FC<InputDetailProps> = ({labelName}) => {
+const InputDetail = () => {
   return (
     <div className="w-full font-bold">
       <div className="max-w-5xl mx-auto p-2">
-        <label className="text-2xl ">{labelName}</label>
+        <label className="text-2xl ">DETAIL</label>
         <input
           type="text"
           placeholder="Text"
