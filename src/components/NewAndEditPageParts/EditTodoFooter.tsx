@@ -1,4 +1,6 @@
-const DetailTodoFooter = () => {
+import { Button } from "../Button";
+
+export const EditTodoFooter = () => {
   return (
     <div className="w-full font-bold">
       <div className="text-[28px] max-w-5xl mx-auto p-2 flex justify-between">
@@ -11,13 +13,11 @@ const DetailTodoFooter = () => {
           <p className="text-xl">2021-12-24 18:55</p>
         </div>
         <div className="mt-2 ml-auto">
-          <button className="text-white text-[18px] w-28 h-10 border border-black rounded-3xl bg-[#25855A] mr-2">
+          <Button href={"/"} backgroundColor="#25855A" fontColor="white">
             UPDATE
-          </button>
+          </Button>
         </div>
       </div>
     </div>
   );
 };
-
-export default DetailTodoFooter;
