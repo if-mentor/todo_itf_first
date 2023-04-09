@@ -8,6 +8,10 @@ type ButtonProps = {
   children: string;
 };
 
+// 濃い緑：#25855A
+// 薄い緑：#68D391
+// 薄桃色：#FED7E2
+
 export const Button: React.FC<ButtonProps> = ({
   href,
   backgroundColor,
@@ -23,6 +27,3 @@ export const Button: React.FC<ButtonProps> = ({
     </Link>
   );
 };
-
-// 薄い緑：
-// 濃い緑：#25855A
