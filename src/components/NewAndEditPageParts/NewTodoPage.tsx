@@ -32,7 +32,7 @@ const NewTodoPage = () => {
       Detail: form.todoDetail,
       Create: timestamp,
       Update: timestamp,
-      Dtaft: false,
+      Draft: false,
     };
     await addDoc(docRef, payload);
   };
