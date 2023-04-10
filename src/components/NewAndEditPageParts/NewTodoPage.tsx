@@ -26,7 +26,7 @@ const NewTodoPage = () => {
   const handleCreate = async () => {
     const docRef = collection(db, "todos");
     const payload = {
-      Stasus: "NOT STARTED",
+      Status: "NOT STARTED",
       Priority: form.selectedPriority,
       Title: form.todoTitle,
       Detail: form.todoDetail,
