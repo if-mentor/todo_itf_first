@@ -1,3 +1,5 @@
+import { Button } from "../Button";
+
 type TodoTopProps = {
   title: string;
 };
@@ -7,7 +9,11 @@ const TodoTop: React.FC<TodoTopProps> = ({ title }) => {
     <div className="w-full font-bold">
       <div className="text-[28px] max-w-5xl mx-auto p-2 flex justify-between">
         <h2>{title}</h2>
-        <button className="text-[18px] w-28 h-10 border border-black rounded-3xl bg-[#68D391] mt-[23px]">Back</button>
+        <div className="mt-8">
+          <Button href="/" backgroundColor="#68D391" fontColor="black">
+            BACK
+          </Button>
+        </div>
       </div>
     </div>
   );
