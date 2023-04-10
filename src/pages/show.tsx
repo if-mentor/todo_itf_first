@@ -32,26 +32,28 @@ const comments: Comment[] = [
 
 const show = () => {
   return (
-    <div className="w-full font-bold">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-[28px] p-2">SHOW TODO</div>
-        <div className="flex">
-          <ShowTodo />
-          <div className="mt-2 ml-4 max-h-[464px]">
-            {comments.map((comment: Comment) => {
-              return (
-                <ShowComment
-                  name={comment.name}
-                  date={comment.created_at}
-                  content={comment.content}
-                />
+    <>
+      <div className="w-full font-bold">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-[28px] p-2">SHOW TODO</div>
+          <div className="flex">
+            <ShowTodo />
+            <div className="mt-2 ml-4 max-h-[464px]">
+              {comments.map((comment: Comment) => {
+                return (
+                  <ShowComment
+                    name={comment.name}
+                    date={comment.created_at}
+                    content={comment.content}
+                  />
+                )}
               )}
-            )}
+            </div>
+            
           </div>
-          
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

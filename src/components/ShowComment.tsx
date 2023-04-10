@@ -1,10 +1,10 @@
-type ShoeCommentProps = {
+type ShowCommentProps = {
   name: string;
   date: string;
   content: string;
 }
 
-const ShowComment: React.FC<ShoeCommentProps> = ({name, date, content}) => {
+const ShowComment: React.FC<ShowCommentProps> = ({name, date, content}) => {
   return (
     <div>
       <div className=
