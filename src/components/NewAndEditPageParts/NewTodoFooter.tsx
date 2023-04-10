@@ -1,6 +1,6 @@
-import { Button } from "../Button";
+import { DeepGreenButton, LightPinkButton } from "../Button";
 
-const NewTodoFooter = () => {
+const NewTodoFooter: React.FC = () => {
   return (
     <div className="w-full font-bold">
       <div className="text-[28px] max-w-5xl mx-auto p-2 flex justify-between">
@@ -16,12 +16,8 @@ const NewTodoFooter = () => {
           </div>
         </div>
         <div className="mt-16 flex">
-          <Button href="/" backgroundColor="#fed7e2" fontColor="black">
-            DRAFT
-          </Button>
-          <Button href="/" backgroundColor="#25855A" fontColor="white">
-            DRAFT
-          </Button>
+          <LightPinkButton href="/">DRAFT</LightPinkButton>
+          <DeepGreenButton href="/">UPDATE</DeepGreenButton>
         </div>
       </div>
     </div>
