@@ -1,4 +1,4 @@
-import { Button } from "../Button";
+import { DeepGreenButton } from "../Button";
 
 export const EditTodoFooter = () => {
   return (
@@ -13,9 +13,7 @@ export const EditTodoFooter = () => {
           <p className="text-xl">2021-12-24 18:55</p>
         </div>
         <div className="mt-2 ml-auto">
-          <Button href={"/"} backgroundColor="#25855A" fontColor="white">
-            UPDATE
-          </Button>
+          <DeepGreenButton href="/">UPDATE</DeepGreenButton>
         </div>
       </div>
     </div>
