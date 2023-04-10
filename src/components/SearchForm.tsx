@@ -1,14 +1,16 @@
+import Link from "next/link"
+
 const SearchForm = () => {
   return (
     <div className='w-full font-bold'>
         <div className='text-2xl max-w-5xl mx-auto py-2 flex justify-between'>
             <h2>TODO LIST</h2>
-            <div className='border border-solid border-gray rounded-full px-2 mt-5 bg-slate-300'>
-                <button>
+            <div className='border border-solid border-gray rounded-full p-2 mt-5 bg-slate-300'>
+                <Link href="/create">
                     <svg className="h-4 w-4 text-black"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4"/>
                     </svg>
-                </button>
+                </Link>
             </div>
         </div>
         <div className='flex  space-x-5 max-w-5xl mx-auto py-2'>
