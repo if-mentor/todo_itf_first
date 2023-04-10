@@ -2,14 +2,14 @@ import Link from "next/link"
 
 const ShowTodo = () => {
   return (
-    <div className="border border-black rounded-lg m-3 w-[580px] h-[480px] mx-auto">
+    <div className="border border-black rounded-lg min-w-[580px] min-h-[480px]">
       <div className="p-3">
-        <p className="bg-green-400 text-[24px] font-bold">TITLE</p>
+        <p className="bg-[#68D391] text-[24px]">TITLE</p>
         {/* TODOのタイトルを取ってくる */}
         <p className="text-xl">GITHUB上に静的サイトをホスティングする</p>
       </div>
       <div className="p-3">
-        <p className="bg-green-400 text-[24px] font-bold">DETAIL</p>
+        <p className="bg-[#68D391] text-[24px]">DETAIL</p>
         {/* TODOのディティールを取ってくる */}
         <p className="text-xl">
           AWSコンソールでAWS AMPLIFYを使って静的ウェブサイトをホスティングします。
@@ -21,8 +21,8 @@ const ShowTodo = () => {
         </p>
       </div>
       <div className="m-3 flex justify-between">
-        <Link href='' className="border border-black bg-green-400 rounded-full px-5 py-2 my-auto flex">
-          <span className="text-[18px] font-bold pr-[11px]">Edit</span>
+        <Link href='' className="border border-black bg-[#68D391] rounded-full px-5 py-2 my-auto flex">
+          <span className="text-[18px] pr-[11px]">Edit</span>
             <svg className="h-5 w-5 text-black mt-1"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
           </svg>
