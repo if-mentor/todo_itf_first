@@ -1,5 +1,6 @@
 import ShowComment from "@/components/ShowComment"
 import ShowTodo from "@/components/ShowTodo"
+import ShowTodoLink from "@/components/ShowTodoLink";
 
 type Comment = {
   name: string;
@@ -33,15 +34,16 @@ const comments: Comment[] = [
 const show = () => {
   return (
     <>
+      <ShowTodoLink />
       <div className="w-full font-bold">
         <div className="max-w-5xl mx-auto">
-          <div className="text-[28px] p-2">SHOW TODO</div>
           <div className="flex">
             <ShowTodo />
             <div className="mt-2 ml-4 max-h-[464px]">
               {comments.map((comment: Comment) => {
                 return (
                   <ShowComment
+                    key={comment.name}
                     name={comment.name}
                     date={comment.created_at}
                     content={comment.content}
