@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 type Post = {
   task: string;
   status: 'NOT STARTED' | 'DOING' | 'DONE';
@@ -68,7 +70,10 @@ const TodoList: React.FC = () => {
             // keyは後で修正
             <tr className='border-b' key={post.task}>
             <td className='text-left py-3'>
-              <p className='text-sm'>{post.task}</p>
+              <p className='text-sm'>
+                {/* firebaseのデータを引っ張るときに[id]ページを設定し、投稿ごとの詳細ページに移動する */}
+                <Link href='/show'>{post.task}</Link>
+              </p>
             </td>
             <td>
               <p 
