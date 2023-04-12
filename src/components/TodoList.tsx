@@ -1,57 +1,43 @@
+import { Timestamp, collection, onSnapshot, query } from "firebase/firestore";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { db } from "../../lib/firebase";
+import dayjs from "dayjs";
 
-type Post = {
-  task: string;
+type Todo = {
+  id: string;
+  title: string;
+  detail: string;
   status: 'NOT STARTED' | 'DOING' | 'DONE';
   priority: 'High' | 'Middle' | 'Low';
+  draft: boolean;
   created_at: string;
   updated_at: string;
 }
 const TodoList: React.FC = () => {
-  const posts: Post[] = [
-    {
-      task: 'Github上に静的サイトをホスティングする',
-      status: 'NOT STARTED',
-      priority: 'High',
-      created_at: '2020-11-8 18:55',
-      updated_at: '2020-11-8 18:55'
-    },
-    {
-      task: 'ReactでTodoサイトを作成する',
-      status: 'DOING',
-      priority: 'Low',
-      created_at: '2020-11-8 18:55',
-      updated_at: '2020-11-8 18:55'
-    },
-    {
-      task: 'Firestore Hostingを学習する',
-      status: 'DONE',
-      priority: 'Middle',
-      created_at: '2020-11-8 18:55',
-      updated_at: '2020-11-8 18:55'
-    },
-    {
-      task: '感謝の正拳突き',
-      status: 'DOING',
-      priority: 'High',
-      created_at: '2020-11-8 18:55',
-      updated_at: '2020-11-8 18:55'
-    },
-    {
-      task: '二重の極み',
-      status: 'DONE',
-      priority: 'High',
-      created_at: '2020-11-8 18:55',
-      updated_at: '2020-11-8 18:55'
-    },
-    {
-      task: '魔封波',
-      status: 'DOING',
-      priority: 'Low',
-      created_at: '2020-11-8 18:55',
-      updated_at: '2020-11-8 18:55'
-    }
-  ]
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  // todosにfirestoreのデータを追加
+  useEffect(() => {
+    const q = query(collection(db, 'todos'));
+    onSnapshot(q, async(snapshot) => {
+      setTodos(
+        snapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            title: doc.data().Title as string,
+            detail: doc.data().Detail as string,
+            status: doc.data().Status as 'NOT STARTED' | 'DOING' | 'DONE',
+            priority: doc.data().Priority as 'High' | 'Middle' | 'Low',
+            draft: doc.data().Draft as boolean,
+            created_at: dayjs(doc.data().Create.toDate()).format('YYYY/MM/DD'),
+            updated_at: dayjs(doc.data().Update.toDate()).format('YYYY/MM/DD')
+          }
+        })
+      )
+    })
+  },[]);
+
   return (
     <div className='max-w-5xl mx-auto py-2 flex justify-between'>
       <table className='w-full table-auto my-3'>
@@ -66,52 +52,60 @@ const TodoList: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {posts.map((post: Post) => (
-            // keyは後で修正
-            <tr className='border-b' key={post.task}>
-            <td className='text-left py-3'>
-              <p className='text-sm'>
-                {/* firebaseのデータを引っ張るときに[id]ページを設定し、投稿ごとの詳細ページに移動する */}
-                <Link href='/show'>{post.task}</Link>
-              </p>
-            </td>
-            <td>
-              <p 
-                className={`border border-black outline-none rounded-full
-                  font-bold py-1 text-center
-                  ${post.status === 'NOT STARTED' ? 'text-[3px] bg-green-100'
-                  : post.status === 'DOING' ? 'text-xs bg-green-700 text-white'
-                  : 'text-xs bg-green-400'}
-                `}
-              >
-                {post.status}
-              </p>
-            </td>
-            <td className='text-center'>
-              <select 
-                value={post.priority}
-                className='border border-red-400 outline-none rounded-md
-                 text-xs p-1'
-              >
-                <option value='High'>High</option>
-                <option value='Middle'>Middle</option>
-                <option value='Low'>Low</option>
-              </select>
-            </td>
-            <td className='text-xs text-center'>{post.created_at}</td>
-            <td className='text-xs text-center'>{post.updated_at}</td>
-            <td className=' text-center py-3'>
-              <button>
-                <svg className="h-4 w-4 text-gray-500 mr-4"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                </svg>
-              </button>
-              <button>
-                <svg className="h-4 w-4 text-gray-500"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <polyline points="3 6 5 6 21 6" />  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" /></svg>
-              </button>
-            </td>
-          </tr> 
-          ))}
+          {todos.map((todo: Todo) => {
+            // draftがfalseの投稿のみ表示
+            if (!todo.draft) {
+              return (
+                // key修正済
+                <tr className='border-b' key={todo.id}>
+                  <td className='text-left py-3'>
+                    <p className='text-sm'>
+                      {/* firebaseのデータを引っ張るときに[id]ページを設定し、投稿ごとの詳細ページに移動する */}
+                      <Link href='/show'>{todo.title}</Link>
+                    </p>
+                  </td>
+                  <td>
+                    <p 
+                      className={`border border-black outline-none rounded-full
+                        font-bold py-1 text-center
+                        ${todo.status === 'NOT STARTED' ? 'text-[3px] bg-green-100'
+                        : todo.status === 'DOING' ? 'text-xs bg-green-700 text-white'
+                        : 'text-xs bg-green-400'}
+                      `}
+                    >
+                      {todo.status}
+                    </p>
+                  </td>
+                  <td className='text-center'>
+                    <select 
+                      value={todo.priority}
+                      className='border border-red-400 outline-none rounded-md
+                      text-xs p-1'
+                      onChange={(e) => e.target.value}
+                    >
+                      <option value='High'>High</option>
+                      <option value='Middle'>Middle</option>
+                      <option value='Low'>Low</option>
+                    </select>
+                  </td>
+                  <td className='text-xs text-center'>{todo.created_at}</td>
+                  <td className='text-xs text-center'>{todo.updated_at}</td>
+                  <td className=' text-center py-3'>
+                    <button>
+                      <svg className="h-4 w-4 text-gray-500 mr-4"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                      </svg>
+                    </button>
+                    <button>
+                      <svg className="h-4 w-4 text-gray-500"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round">
+                        <polyline points="3 6 5 6 21 6" />  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                      </svg>
+                    </button>
+                  </td>
+                </tr> 
+              )
+            }
+          })}
         </tbody>
       </table>
     </div>
