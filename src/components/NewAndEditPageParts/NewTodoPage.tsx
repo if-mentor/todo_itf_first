@@ -37,6 +37,20 @@ const NewTodoPage = () => {
     await addDoc(docRef, payload);
   };
 
+  const handleDraft = async () => {
+    const docRef = collection(db, "todos");
+    const payload = {
+      Status: "NOT STARTED",
+      Priority: form.selectedPriority,
+      Title: form.todoTitle,
+      Detail: form.todoDetail,
+      Create: timestamp,
+      Update: timestamp,
+      Draft: true,
+    };
+    await addDoc(docRef, payload);
+  };
+
   return (
     <>
       <div className="w-full font-bold">
@@ -80,7 +94,9 @@ const NewTodoPage = () => {
           </div>
         </div>
         <div className="text-2xl max-w-5xl mx-auto p-2 flex justify-end">
-          <LightPinkButton href="/">DRAFT</LightPinkButton>
+          <div onClick={handleDraft}>
+            <LightPinkButton href="/">DRAFT</LightPinkButton>
+          </div>
           <div onClick={handleCreate}>
             <DeepGreenButton href="/">CREATE</DeepGreenButton>
           </div>
