@@ -4,11 +4,11 @@ import { auth } from '../../lib/firebase'
 import { signOut } from 'firebase/auth'
 
 const Header = () => {
-  const [user, setUser] = useState<string>('GuestAccount');
+  const [user, setUser] = useState<string|null>('GuestAccount');
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {
-        setUser(currentUser.displayName || currentUser.email || currentUser.uid);
+        setUser(currentUser.email);
       } else {
         setUser('GuestAccount');
       }
