@@ -33,8 +33,8 @@ export const NewTodoPage = () => {
       priority: form.selectedPriority,
       title: form.todoTitle,
       detail: form.todoDetail,
-      create: timestamp,
-      update: timestamp,
+      created_at: timestamp,
+      updated_at: timestamp,
       draft: false,
     };
     await addDoc(docRef, payload);
@@ -47,8 +47,8 @@ export const NewTodoPage = () => {
       priority: form.selectedPriority,
       title: form.todoTitle,
       detail: form.todoDetail,
-      create: timestamp,
-      update: timestamp,
+      created_at: timestamp,
+      updated_at: timestamp,
       draft: true,
     };
     await addDoc(docRef, payload);
