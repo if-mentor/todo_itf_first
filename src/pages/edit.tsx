@@ -1,18 +1,12 @@
 import { EditTodoFooter } from "@/components/NewAndEditPageParts/EditTodoFooter";
-import InputDetail from "@/components/NewAndEditPageParts/InputDetail";
-import InputTitle from "@/components/NewAndEditPageParts/InputTitle";
-import TodoTop from "@/components/NewAndEditPageParts/TodoTop";
+import { FillOutPageTop } from "@/components/Common/FillOutPageTop";
 import React from "react";
 
-const create = () => {
+export const create = () => {
   return (
     <div>
-      <TodoTop title="EDIT TODO" />
-      <InputTitle />
-      <InputDetail />
+      <FillOutPageTop title="EDIT TODO" />
       <EditTodoFooter />
     </div>
   );
 };
-
-export default create;
