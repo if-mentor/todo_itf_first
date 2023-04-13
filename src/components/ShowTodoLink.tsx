@@ -1,9 +1,33 @@
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Modal from "./Modal";
 
-const ShowTodoLink = () => {
+type Todo = {
+  todoId: string
+}
+
+const ShowTodoLink: React.FC<Todo> = ({todoId}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [name, setName] = useState<string>('');
+  const [comment, setComment] = useState<string>('')
+  const [currentTodoId,setCurrentTodoId] = useState<string>('')
+
+  useEffect(() => {
+    setCurrentTodoId(todoId)
+  },[todoId])
+  const handleCreateComment = () => {
+    
+  }
+
+  const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value)
+    console.log(name)
+  }
+
+  const handleChangeComment = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setComment(e.target.value)
+    console.log(comment)
+  }
   return (
     <>
       <div className="w-full font-bold">
@@ -17,14 +41,14 @@ const ShowTodoLink = () => {
           <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
             <div className="w-full font-bold">
               <h1 className="text-4xl">Comment</h1>
-              <form action="">
+              <form onSubmit={handleCreateComment}>
                 <div>
                   <h2>Name</h2>
-                  <input type="text" className="border border-black rounded-md w-full"/>
+                  <input type="text" name="name" onChange={handleChangeName} className="border border-black rounded-md w-full"/>
                 </div>
                 <div>
                   <h2>Your Comment</h2>
-                  <textarea name="" rows={7} id="" className="border border-black rounded-md w-full resize-none"/>
+                  <textarea name="comment" rows={7} onChange={handleChangeComment} className="border border-black rounded-md w-full resize-none"/>
                 </div>
                 <div>
                   <input type="submit" value="CREATE" className="border border-black mt-3 bg-green-800 text-white text-center rounded-md p-1 w-full"/>

@@ -48,7 +48,7 @@ const Login = () => {
                         <input className=' bg-green-100 rounded-full px-2 py-2 w-96' type="password" name="password" onChange={handleChangePassword}  />
                     </div>
                     
-                    <input className=' bg-green-700 rounded-full w-36 my-5 text-white py-1 mx-auto' type="submit" value="LOGIN"/>
+                    <input className='hover:cursor-pointer bg-green-700 rounded-full w-36 my-5 text-white py-1 mx-auto' type="submit" value="LOGIN"/>
                 </form>
             </div>
         </div>
