@@ -1,21 +1,47 @@
-import { DeepGreenButton } from "../Button";
+import { useRouter } from "next/router";
+import { deepGreenButton } from "../Common/ButtonDesign";
 
 export const EditTodoFooter = () => {
+  const router = useRouter();
   return (
-    <div className="w-full font-bold">
-      <div className="text-[28px] max-w-5xl mx-auto p-2 flex justify-between">
-        <div className="colums-1 mr-5">
-          <h4 className="text-base">Create</h4>
-          <p className="text-xl">2020-11-8-18:55</p>
+    <>
+      <div className="w-full font-bold">
+        <div className="max-w-5xl mx-auto p-2">
+          <label className="text-2xl">TITLE</label>
+          <input
+            type="text"
+            placeholder="Text"
+            className="text-5 border border-black w-full h-[71px] rounded-[10px] px-4 py-2 placeholder:text-black focus:placeholder:text-white  placeholder:absolute placeholder:text-2xl"
+            name="todoTitle"
+          />
         </div>
-        <div className="colums-1">
-          <h4 className="text-base">Detail</h4>
-          <p className="text-xl">2021-12-24 18:55</p>
+        <div className="max-w-5xl mx-auto p-2">
+          <label className="text-2xl">DETAIL</label>
+          <textarea
+            name="todoDetail"
+            id="text"
+            rows={10}
+            placeholder=" Text"
+            className="text-5 border border-black w-full resize-none h-[208px] rounded-[10px] px-4 py-2 placeholder:text-black focus:placeholder-white placeholder:absolute placeholder:text-2xl"
+          ></textarea>
         </div>
-        <div className="mt-2 ml-auto">
-          <DeepGreenButton href="/">UPDATE</DeepGreenButton>
+        <div className="text-2xl max-w-5xl mx-auto p-2">
+          <h2>PRIORITY</h2>
+          <div className="flex">
+            {["High", "Middle", "Low"].map((priority) => (
+              <label key={priority} className="pl-3 pr-6">
+                <input type="radio" name="selectedPriority" value={priority} />
+                {priority}
+              </label>
+            ))}
+          </div>
+        </div>
+        <div className="text-2xl max-w-5xl mx-auto p-2 flex justify-end">
+          <button className={deepGreenButton} onClick={() => router.push("/")}>
+            UPDATE
+          </button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
