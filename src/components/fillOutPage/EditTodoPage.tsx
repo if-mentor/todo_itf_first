@@ -4,11 +4,13 @@ import { inputClass, textareaClass } from "./commonClass/fillOutClass";
 import { useState } from "react";
 import { db } from "../../../lib/firebase";
 import { doc, setDoc } from "firebase/firestore";
+import dayjs from "dayjs";
 
 export const EditTodoPage = () => {
   const router = useRouter();
   const getData = router.query;
   const [todo, setTodo] = useState(getData);
+  console.log(todo);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -24,18 +26,22 @@ export const EditTodoPage = () => {
 
   const handleUpdate = async () => {
     if (getData.id !== undefined) {
-      const selectedId = getData.id as string;
-      const docRef = doc(db, "todos", selectedId);
-      const payload = {
-        status: "NOT STARTED",
-        priority: todo.priority,
-        title: todo.title,
-        detail: todo.detail,
-        updated_at: new Date(),
-        draft: false,
-      };
-      await setDoc(docRef, payload);
-      router.push("/");
+      if (todo.created_at !== undefined) {
+        const selectedId = getData.id as string;
+        const docRef = doc(db, "todos", selectedId);
+        const payload = {
+          status: "NOT STARTED",
+          priority: todo.priority,
+          title: todo.title,
+          detail: todo.detail,
+          //dayjsがわからないので、いったんcreated_atも更新
+          created_at: new Date(),
+          updated_at: new Date(),
+          draft: false,
+        };
+        await setDoc(docRef, payload);
+        router.push("/");
+      }
     }
   };
 
