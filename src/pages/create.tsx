@@ -1,5 +1,5 @@
 import { NewTodoPage } from "@/components/fillOutPage/NewTodoPage";
-import { FillOutPageTop } from "@/components/fillOutPage/common/FillOutPageTop";
+import { FillOutPageTop } from "@/components/fillOutPage/FillOutPageTop";
 
 const create = () => {
   return (

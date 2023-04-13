@@ -1,5 +1,5 @@
 import { EditTodoPage } from "@/components/fillOutPage/EditTodoPage";
-import { FillOutPageTop } from "@/components/fillOutPage/common/FillOutPageTop";
+import { FillOutPageTop } from "@/components/fillOutPage/FillOutPageTop";
 import React from "react";
 
 const edit = () => {

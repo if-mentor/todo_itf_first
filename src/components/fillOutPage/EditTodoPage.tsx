@@ -1,8 +1,13 @@
 import { useRouter } from "next/router";
-import { deepGreenButton } from "./common/ButtonDesign";
+import { deepGreenButton } from "./commonClass/ButtonClass";
+import { inputClass, textareaClass } from "./commonClass/fillOutClass";
+import { useState } from "react";
 
 export const EditTodoPage = () => {
+  const [todo, setTodo] = useState([]);
   const router = useRouter();
+  const getData = router.query;
+
   return (
     <>
       <div className="w-full font-bold">
@@ -11,8 +16,9 @@ export const EditTodoPage = () => {
           <input
             type="text"
             placeholder="Text"
-            className="text-5 border border-black w-full h-[71px] rounded-[10px] px-4 py-2 placeholder:text-black focus:placeholder:text-white  placeholder:absolute placeholder:text-2xl"
+            className={inputClass}
             name="todoTitle"
+            value={getData.title}
           />
         </div>
         <div className="max-w-5xl mx-auto p-2">
@@ -22,7 +28,7 @@ export const EditTodoPage = () => {
             id="text"
             rows={10}
             placeholder=" Text"
-            className="text-5 border border-black w-full resize-none h-[208px] rounded-[10px] px-4 py-2 placeholder:text-black focus:placeholder-white placeholder:absolute placeholder:text-2xl"
+            className={textareaClass}
           ></textarea>
         </div>
         <div className="text-2xl max-w-5xl mx-auto p-2">

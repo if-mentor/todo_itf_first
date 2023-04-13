@@ -2,7 +2,8 @@ import { addDoc, collection } from "firebase/firestore";
 import { useState } from "react";
 import { db } from "../../../lib/firebase";
 import { useRouter } from "next/router";
-import { deepGreenButton, lightpinkButton } from "./common/ButtonDesign";
+import { deepGreenButton, lightpinkButton } from "./commonClass/ButtonClass";
+import { inputClass, textareaClass } from "./commonClass/fillOutClass";
 
 export const NewTodoPage = () => {
   const router = useRouter();
@@ -63,7 +64,7 @@ export const NewTodoPage = () => {
           <input
             type="text"
             placeholder="Text"
-            className="text-5 border border-black w-full h-[71px] rounded-[10px] px-4 py-2 placeholder:text-black focus:placeholder:text-white  placeholder:absolute placeholder:text-2xl"
+            className={inputClass}
             name="todoTitle"
             value={form.todoTitle}
             onChange={handleChange}
@@ -76,7 +77,7 @@ export const NewTodoPage = () => {
             id="text"
             rows={10}
             placeholder=" Text"
-            className="text-5 border border-black w-full resize-none h-[208px] rounded-[10px] px-4 py-2 placeholder:text-black focus:placeholder-white placeholder:absolute placeholder:text-2xl"
+            className={textareaClass}
             value={form.todoDetail}
             onChange={handleChange}
           ></textarea>

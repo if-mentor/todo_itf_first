@@ -1,4 +1,4 @@
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { collection, doc, getDoc, onSnapshot, query } from "firebase/firestore";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { db } from "../../lib/firebase";
@@ -43,6 +43,28 @@ const TodoList: React.FC = () => {
       );
     });
   }, []);
+
+  const handleEdit = async (selectedId: string) => {
+    const docRef = doc(db, "todos", selectedId);
+    const docSnap = await getDoc(docRef);
+    const data = docSnap.data();
+    if (data) {
+      const selectedTodo: Todo = {
+        id: selectedId,
+        draft: data.draft,
+        created_at: data.created_at.seconds,
+        priority: data.priority,
+        detail: data.detail,
+        status: data.status,
+        title: data.title,
+        updated_at: data.updated_at.seconds,
+      };
+      router.push({
+        pathname: "/edit",
+        query: selectedTodo,
+      });
+    }
+  };
 
   return (
     <div className="max-w-5xl mx-auto py-2 flex justify-between">
@@ -101,7 +123,7 @@ const TodoList: React.FC = () => {
                   <td className="text-xs text-center">{todo.created_at}</td>
                   <td className="text-xs text-center">{todo.updated_at}</td>
                   <td className=" text-center py-3">
-                    <button>
+                    <button onClick={() => handleEdit(todo.id)}>
                       <svg
                         className="h-4 w-4 text-gray-500 mr-4"
                         fill="none"
