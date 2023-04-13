@@ -1,9 +1,12 @@
 import { addDoc, collection } from "firebase/firestore";
-import { DeepGreenButton, LightPinkButton } from "../Button";
 import { useState } from "react";
 import { db } from "../../../lib/firebase";
+import { useRouter } from "next/router";
+import { deepGreenButton, lightpinkButton } from "../Common/ButtonDesign";
 
-const NewTodoPage = () => {
+export const NewTodoPage = () => {
+  const router = useRouter();
+
   const [form, setForm] = useState({
     todoTitle: "",
     todoDetail: "",
@@ -26,6 +29,7 @@ const NewTodoPage = () => {
   const handleCreate = async () => {
     const docRef = collection(db, "todos");
     const payload = {
+      //小文字
       Status: "NOT STARTED",
       Priority: form.selectedPriority,
       Title: form.todoTitle,
@@ -49,6 +53,7 @@ const NewTodoPage = () => {
       Draft: true,
     };
     await addDoc(docRef, payload);
+    router.push("/");
   };
 
   return (
@@ -94,16 +99,14 @@ const NewTodoPage = () => {
           </div>
         </div>
         <div className="text-2xl max-w-5xl mx-auto p-2 flex justify-end">
-          <div onClick={handleDraft}>
-            <LightPinkButton href="/">DRAFT</LightPinkButton>
-          </div>
-          <div onClick={handleCreate}>
-            <DeepGreenButton href="/">CREATE</DeepGreenButton>
-          </div>
+          <button onClick={handleDraft} className={lightpinkButton}>
+            DRAFT
+          </button>
+          <button onClick={handleDraft} className={deepGreenButton}>
+            CREATE
+          </button>
         </div>
       </div>
     </>
   );
 };
-
-export default NewTodoPage;
