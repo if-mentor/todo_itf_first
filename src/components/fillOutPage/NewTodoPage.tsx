@@ -21,8 +21,6 @@ export const NewTodoPage = () => {
     setForm((prevForm) => ({ ...prevForm, [name]: value }));
   };
 
-  const timestamp = new Date();
-
   const handlePriorityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prevForm) => ({ ...prevForm, selectedPriority: e.target.value }));
   };
@@ -34,11 +32,12 @@ export const NewTodoPage = () => {
       priority: form.selectedPriority,
       title: form.todoTitle,
       detail: form.todoDetail,
-      created_at: timestamp,
-      updated_at: timestamp,
+      created_at: new Date(),
+      updated_at: new Date(),
       draft: false,
     };
     await addDoc(docRef, payload);
+    router.push("/");
   };
 
   const handleDraft = async () => {
@@ -48,8 +47,8 @@ export const NewTodoPage = () => {
       priority: form.selectedPriority,
       title: form.todoTitle,
       detail: form.todoDetail,
-      created_at: timestamp,
-      updated_at: timestamp,
+      created_at: new Date(),
+      updated_at: new Date(),
       draft: true,
     };
     await addDoc(docRef, payload);
@@ -102,7 +101,7 @@ export const NewTodoPage = () => {
           <button onClick={handleDraft} className={lightpinkButton}>
             DRAFT
           </button>
-          <button onClick={handleDraft} className={deepGreenButton}>
+          <button onClick={handleCreate} className={deepGreenButton}>
             CREATE
           </button>
         </div>
