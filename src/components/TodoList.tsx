@@ -1,4 +1,11 @@
-import { collection, doc, getDoc, onSnapshot, query } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { db } from "../../lib/firebase";
@@ -21,7 +28,7 @@ const TodoList: React.FC = () => {
 
   // todosにfirestoreのデータを追加
   useEffect(() => {
-    const q = query(collection(db, "todos"));
+    const q = query(collection(db, "todos"), orderBy("created_at"));
     onSnapshot(q, (snapshot) => {
       setTodos(
         snapshot.docs.map((doc) => {
