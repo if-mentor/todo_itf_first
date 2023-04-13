@@ -34,7 +34,7 @@ export const EditTodoPage = () => {
           priority: todo.priority,
           title: todo.title,
           detail: todo.detail,
-          //dayjsがわからないので、いったんcreated_atも更新
+          //dayjsの記述がわからないので、いったんcreated_atも更新
           created_at: new Date(),
           updated_at: new Date(),
           draft: false,
@@ -81,7 +81,7 @@ export const EditTodoPage = () => {
                   name="priority"
                   value={priority}
                   checked={priority == todo.priority}
-                  onClick={handlePriorityChange}
+                  onChange={handlePriorityChange}
                 />
                 {priority}
               </label>
