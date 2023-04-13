@@ -25,13 +25,13 @@ const TodoList: React.FC = () => {
         snapshot.docs.map((doc) => {
           return {
             id: doc.id,
-            title: doc.data().Title as string,
-            detail: doc.data().Detail as string,
-            status: doc.data().Status as "NOT STARTED" | "DOING" | "DONE",
-            priority: doc.data().Priority as "High" | "Middle" | "Low",
-            draft: doc.data().Draft as boolean,
-            created_at: dayjs(doc.data().Create.toDate()).format('YYYY-MM-DD HH:mm'),
-            updated_at: dayjs(doc.data().Update.toDate()).format('YYYY-MM-DD HH:mm')
+            title: doc.data().title as string,
+            detail: doc.data().detail as string,
+            status: doc.data().status as "NOT STARTED" | "DOING" | "DONE",
+            priority: doc.data().priority as "High" | "Middle" | "Low",
+            draft: doc.data().draft as boolean,
+            created_at: dayjs(doc.data().created_at.toDate()).format('YYYY-MM-DD HH:mm'),
+            updated_at: dayjs(doc.data().updated_at.toDate()).format('YYYY-MM-DD HH:mm')
           }
         })
       );
