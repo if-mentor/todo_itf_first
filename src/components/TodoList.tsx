@@ -1,5 +1,6 @@
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   onSnapshot,
@@ -71,6 +72,10 @@ const TodoList: React.FC = () => {
         query: selectedTodo,
       });
     }
+  };
+
+  const handleDelete = (selectedId: string) => {
+    deleteDoc(doc(db, "todos", selectedId));
   };
 
   return (
@@ -145,7 +150,7 @@ const TodoList: React.FC = () => {
                         />
                       </svg>
                     </button>
-                    <button>
+                    <button onClick={() => handleDelete(todo.id)}>
                       <svg
                         className="h-4 w-4 text-gray-500"
                         viewBox="0 0 24 24"
