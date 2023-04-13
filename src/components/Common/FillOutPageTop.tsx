@@ -1,12 +1,12 @@
 import React from "react";
-import { lightGreenButton } from "../Common/ButtonDesign";
+import { lightGreenButton } from "./ButtonDesign";
 import { useRouter } from "next/router";
 
-type TodoTopProps = {
+type FillOutPageTopProps = {
   title: string;
 };
 
-const TodoTop: React.FC<TodoTopProps> = ({ title }) => {
+export const FillOutPageTop: React.FC<FillOutPageTopProps> = ({ title }) => {
   const router = useRouter();
   return (
     <div className="w-full font-bold">
@@ -21,5 +21,3 @@ const TodoTop: React.FC<TodoTopProps> = ({ title }) => {
     </div>
   );
 };
-
-export default TodoTop;

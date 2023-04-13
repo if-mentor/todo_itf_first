@@ -4,7 +4,7 @@ import { db } from "../../../lib/firebase";
 import { useRouter } from "next/router";
 import { deepGreenButton, lightpinkButton } from "../Common/ButtonDesign";
 
-const NewTodoPage = () => {
+export const NewTodoPage = () => {
   const router = useRouter();
 
   const [form, setForm] = useState({
@@ -110,5 +110,3 @@ const NewTodoPage = () => {
     </>
   );
 };
-
-export default NewTodoPage;

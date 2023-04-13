@@ -1,13 +1,11 @@
-import NewTodoPage from "@/components/NewAndEditPageParts/NewTodoPage";
-import TodoTop from "@/components/NewAndEditPageParts/TodoTop";
+import { NewTodoPage } from "@/components/NewAndEditPageParts/NewTodoPage";
+import { FillOutPageTop } from "@/components/Common/FillOutPageTop";
 
-const create = () => {
+export const create = () => {
   return (
     <div>
-      <TodoTop title="NEW TODO" />
+      <FillOutPageTop title="NEW TODO" />
       <NewTodoPage />
     </div>
   );
 };
-
-export default create;
