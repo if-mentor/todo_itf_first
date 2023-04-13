@@ -29,14 +29,13 @@ export const NewTodoPage = () => {
   const handleCreate = async () => {
     const docRef = collection(db, "todos");
     const payload = {
-      //小文字
-      Status: "NOT STARTED",
-      Priority: form.selectedPriority,
-      Title: form.todoTitle,
-      Detail: form.todoDetail,
-      Create: timestamp,
-      Update: timestamp,
-      Draft: false,
+      status: "NOT STARTED",
+      priority: form.selectedPriority,
+      title: form.todoTitle,
+      detail: form.todoDetail,
+      created_at: timestamp,
+      updated_at: timestamp,
+      draft: false,
     };
     await addDoc(docRef, payload);
   };
@@ -44,13 +43,13 @@ export const NewTodoPage = () => {
   const handleDraft = async () => {
     const docRef = collection(db, "todos");
     const payload = {
-      Status: "NOT STARTED",
-      Priority: form.selectedPriority,
-      Title: form.todoTitle,
-      Detail: form.todoDetail,
-      Create: timestamp,
-      Update: timestamp,
-      Draft: true,
+      status: "NOT STARTED",
+      priority: form.selectedPriority,
+      title: form.todoTitle,
+      detail: form.todoDetail,
+      created_at: timestamp,
+      updated_at: timestamp,
+      draft: true,
     };
     await addDoc(docRef, payload);
     router.push("/");
