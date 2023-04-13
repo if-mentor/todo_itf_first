@@ -1,7 +1,7 @@
 import { NewTodoPage } from "@/components/NewAndEditPageParts/NewTodoPage";
 import { FillOutPageTop } from "@/components/Common/FillOutPageTop";
 
-export const create = () => {
+const create = () => {
   return (
     <div>
       <FillOutPageTop title="NEW TODO" />
@@ -9,3 +9,5 @@ export const create = () => {
     </div>
   );
 };
+
+export default create;
