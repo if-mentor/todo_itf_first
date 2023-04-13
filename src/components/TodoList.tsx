@@ -1,4 +1,4 @@
-import { Timestamp, collection, onSnapshot, query } from "firebase/firestore";
+import { collection, onSnapshot, query } from "firebase/firestore";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { db } from "../../lib/firebase";
@@ -20,7 +20,7 @@ const TodoList: React.FC = () => {
   // todosにfirestoreのデータを追加
   useEffect(() => {
     const q = query(collection(db, 'todos'));
-    onSnapshot(q, async(snapshot) => {
+    onSnapshot(q, (snapshot) => {
       setTodos(
         snapshot.docs.map((doc) => {
           return {
@@ -30,8 +30,8 @@ const TodoList: React.FC = () => {
             status: doc.data().Status as 'NOT STARTED' | 'DOING' | 'DONE',
             priority: doc.data().Priority as 'High' | 'Middle' | 'Low',
             draft: doc.data().Draft as boolean,
-            created_at: dayjs(doc.data().Create.toDate()).format('YYYY/MM/DD'),
-            updated_at: dayjs(doc.data().Update.toDate()).format('YYYY/MM/DD')
+            created_at: dayjs(doc.data().Create.toDate()).format('YYYY-MM-DD HH:mm'),
+            updated_at: dayjs(doc.data().Update.toDate()).format('YYYY-MM-DD HH:mm')
           }
         })
       )
@@ -41,7 +41,7 @@ const TodoList: React.FC = () => {
   return (
     <div className='max-w-5xl mx-auto py-2 flex justify-between'>
       <table className='w-full table-auto my-3'>
-        <thead className='bg-green-400'>
+        <thead className='bg-[#68D391]'>
           <tr>
             <th className='text-left pl-2 py-2'>Task</th>
             <th>Status</th>
@@ -68,9 +68,9 @@ const TodoList: React.FC = () => {
                     <p 
                       className={`border border-black outline-none rounded-full
                         font-bold py-1 text-center
-                        ${todo.status === 'NOT STARTED' ? 'text-[3px] bg-green-100'
-                        : todo.status === 'DOING' ? 'text-xs bg-green-700 text-white'
-                        : 'text-xs bg-green-400'}
+                        ${todo.status === 'NOT STARTED' ? 'text-[3px] bg-[#F0FFF4]'
+                        : todo.status === 'DOING' ? 'text-xs bg-[#25855A] text-white'
+                        : 'text-xs bg-[#68D391]'}
                       `}
                     >
                       {todo.status}
