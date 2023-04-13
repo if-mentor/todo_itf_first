@@ -2,7 +2,8 @@ import ShowComment from "@/components/ShowComment"
 import ShowTodo from "@/components/ShowTodo"
 import ShowTodoLink from "@/components/ShowTodoLink";
 
-type Comment = {
+export type Comment = {
+  todoId?: string
   name: string;
   content: string;
   created_at: string;
@@ -34,7 +35,7 @@ const comments: Comment[] = [
 const show = () => {
   return (
     <>
-      <ShowTodoLink />
+      <ShowTodoLink todoId=''/>
       <div className="w-full font-bold">
         <div className="max-w-5xl mx-auto">
           <div className="flex">
