@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import { deepGreenButton } from "../Common/ButtonDesign";
+import { deepGreenButton } from "./common/ButtonDesign";
 
-export const EditTodoFooter = () => {
+export const EditTodoPage = () => {
   const router = useRouter();
   return (
     <>

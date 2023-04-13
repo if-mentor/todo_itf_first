@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { db } from "../../lib/firebase";
 import dayjs from "dayjs";
+import { useRouter } from "next/router";
 
 type Todo = {
   id: string;
@@ -15,6 +16,7 @@ type Todo = {
   updated_at: string;
 };
 const TodoList: React.FC = () => {
+  const router = useRouter();
   const [todos, setTodos] = useState<Todo[]>([]);
 
   // todosにfirestoreのデータを追加
@@ -30,18 +32,22 @@ const TodoList: React.FC = () => {
             status: doc.data().status as "NOT STARTED" | "DOING" | "DONE",
             priority: doc.data().priority as "High" | "Middle" | "Low",
             draft: doc.data().draft as boolean,
-            created_at: dayjs(doc.data().created_at.toDate()).format('YYYY-MM-DD HH:mm'),
-            updated_at: dayjs(doc.data().updated_at.toDate()).format('YYYY-MM-DD HH:mm')
-          }
+            created_at: dayjs(doc.data().created_at.toDate()).format(
+              "YYYY-MM-DD HH:mm"
+            ),
+            updated_at: dayjs(doc.data().updated_at.toDate()).format(
+              "YYYY-MM-DD HH:mm"
+            ),
+          };
         })
       );
     });
   }, []);
 
   return (
-    <div className='max-w-5xl mx-auto py-2 flex justify-between'>
-      <table className='w-full table-auto my-3'>
-        <thead className='bg-[#68D391]'>
+    <div className="max-w-5xl mx-auto py-2 flex justify-between">
+      <table className="w-full table-auto my-3">
+        <thead className="bg-[#68D391]">
           <tr>
             <th className="text-left pl-2 py-2">Task</th>
             <th>Status</th>
@@ -68,9 +74,13 @@ const TodoList: React.FC = () => {
                     <p
                       className={`border border-black outline-none rounded-full
                         font-bold py-1 text-center
-                        ${todo.status === 'NOT STARTED' ? 'text-[3px] bg-[#F0FFF4]'
-                        : todo.status === 'DOING' ? 'text-xs bg-[#25855A] text-white'
-                        : 'text-xs bg-[#68D391]'}
+                        ${
+                          todo.status === "NOT STARTED"
+                            ? "text-[3px] bg-[#F0FFF4]"
+                            : todo.status === "DOING"
+                            ? "text-xs bg-[#25855A] text-white"
+                            : "text-xs bg-[#68D391]"
+                        }
                       `}
                     >
                       {todo.status}
@@ -116,7 +126,7 @@ const TodoList: React.FC = () => {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       >
-                        <polyline points="3 6 5 6 21 6" />{" "}
+                        <polyline points="3 6 5 6 21 6" />
                         <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                       </svg>
                     </button>
