@@ -2,7 +2,8 @@ import { addDoc, collection } from "firebase/firestore";
 import { useState } from "react";
 import { db } from "../../../lib/firebase";
 import { useRouter } from "next/router";
-import { deepGreenButton, lightpinkButton } from "../Common/ButtonDesign";
+import { deepGreenButton, lightpinkButton } from "./commonClass/ButtonClass";
+import { inputClass, textareaClass } from "./commonClass/fillOutClass";
 
 export const NewTodoPage = () => {
   const router = useRouter();
@@ -20,8 +21,6 @@ export const NewTodoPage = () => {
     setForm((prevForm) => ({ ...prevForm, [name]: value }));
   };
 
-  const timestamp = new Date();
-
   const handlePriorityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prevForm) => ({ ...prevForm, selectedPriority: e.target.value }));
   };
@@ -33,11 +32,12 @@ export const NewTodoPage = () => {
       priority: form.selectedPriority,
       title: form.todoTitle,
       detail: form.todoDetail,
-      created_at: timestamp,
-      updated_at: timestamp,
+      created_at: new Date(),
+      updated_at: new Date(),
       draft: false,
     };
     await addDoc(docRef, payload);
+    router.push("/");
   };
 
   const handleDraft = async () => {
@@ -47,8 +47,8 @@ export const NewTodoPage = () => {
       priority: form.selectedPriority,
       title: form.todoTitle,
       detail: form.todoDetail,
-      created_at: timestamp,
-      updated_at: timestamp,
+      created_at: new Date(),
+      updated_at: new Date(),
       draft: true,
     };
     await addDoc(docRef, payload);
@@ -63,7 +63,7 @@ export const NewTodoPage = () => {
           <input
             type="text"
             placeholder="Text"
-            className="text-5 border border-black w-full h-[71px] rounded-[10px] px-4 py-2 placeholder:text-black focus:placeholder:text-white  placeholder:absolute placeholder:text-2xl"
+            className={inputClass}
             name="todoTitle"
             value={form.todoTitle}
             onChange={handleChange}
@@ -76,7 +76,7 @@ export const NewTodoPage = () => {
             id="text"
             rows={10}
             placeholder=" Text"
-            className="text-5 border border-black w-full resize-none h-[208px] rounded-[10px] px-4 py-2 placeholder:text-black focus:placeholder-white placeholder:absolute placeholder:text-2xl"
+            className={textareaClass}
             value={form.todoDetail}
             onChange={handleChange}
           ></textarea>
@@ -101,7 +101,7 @@ export const NewTodoPage = () => {
           <button onClick={handleDraft} className={lightpinkButton}>
             DRAFT
           </button>
-          <button onClick={handleDraft} className={deepGreenButton}>
+          <button onClick={handleCreate} className={deepGreenButton}>
             CREATE
           </button>
         </div>
