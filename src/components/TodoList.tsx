@@ -52,6 +52,8 @@ const TodoList: React.FC = () => {
     });
   }, []);
 
+  const handleChangeStatus = () => {};
+
   const handleEdit = async (selectedId: string) => {
     const docRef = doc(db, "todos", selectedId);
     const docSnap = await getDoc(docRef);
