@@ -1,3 +1,4 @@
+import { AuthProvider } from "@/components/AuthContext";
 import { EditTodoPage } from "@/components/fillOutPage/EditTodoPage";
 import { FillOutPageTop } from "@/components/fillOutPage/FillOutPageTop";
 import React from "react";
@@ -5,8 +6,10 @@ import React from "react";
 const edit = () => {
   return (
     <div>
-      <FillOutPageTop title="EDIT TODO" />
-      <EditTodoPage />
+      <AuthProvider>
+        <FillOutPageTop title="EDIT TODO" />
+        <EditTodoPage />
+      </AuthProvider>
     </div>
   );
 };
