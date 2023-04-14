@@ -13,13 +13,13 @@ import { db } from "../../lib/firebase";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 
-type Todo = {
+export type Todo = {
   id: string;
   title: string;
   detail: string;
   status: "NOT STARTED" | "DOING" | "DONE";
   priority: "High" | "Middle" | "Low";
-  draft: boolean;
+  draft?: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -93,6 +93,16 @@ const TodoList: React.FC = () => {
         </thead>
         <tbody>
           {todos.map((todo: Todo) => {
+            // [id].tsxに送るクエリ部分
+            const todoInfo: Todo = {
+              id: todo.id,
+              title: todo.title,
+              detail: todo.detail,
+              status: todo.status,
+              priority: todo.priority,
+              created_at: todo.created_at,
+              updated_at: todo.updated_at
+            }
             // draftがfalseの投稿のみ表示
             if (!todo.draft) {
               return (
@@ -101,7 +111,9 @@ const TodoList: React.FC = () => {
                   <td className="text-left py-3">
                     <p className="text-sm">
                       {/* firebaseのデータを引っ張るときに[id]ページを設定し、投稿ごとの詳細ページに移動する */}
-                      <Link href="/show">{todo.title}</Link>
+                      <Link href={{ pathname: `/todos/${todo.id}`, query: todoInfo}}>
+                        {todo.title}
+                      </Link>
                     </p>
                   </td>
                   <td>
