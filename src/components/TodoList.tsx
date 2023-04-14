@@ -79,11 +79,11 @@ const TodoList: React.FC = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto py-2 flex justify-between">
+    <div className="text-2xl max-w-5xl mx-auto py-2 flex justify-between font-bold">
       <table className="w-full table-auto my-3">
         <thead className="bg-[#68D391]">
           <tr>
-            <th className="text-left pl-2 py-2">Task</th>
+            <th className="text-left pl-2 py-2 w-[384px]">Task</th>
             <th>Status</th>
             <th>Priority</th>
             <th>Create</th>
@@ -101,17 +101,22 @@ const TodoList: React.FC = () => {
               status: todo.status,
               priority: todo.priority,
               created_at: todo.created_at,
-              updated_at: todo.updated_at
-            }
+              updated_at: todo.updated_at,
+            };
             // draftがfalseの投稿のみ表示
             if (!todo.draft) {
               return (
                 // key修正済
                 <tr className="border-b" key={todo.id}>
-                  <td className="text-left py-3">
-                    <p className="text-sm">
+                  <td className="text-left py-3 w-[384px]">
+                    <p className="text-base w-[384px] truncate">
                       {/* firebaseのデータを引っ張るときに[id]ページを設定し、投稿ごとの詳細ページに移動する */}
-                      <Link href={{ pathname: `/todos/${todo.id}`, query: todoInfo}}>
+                      <Link
+                        href={{
+                          pathname: `/todos/${todo.id}`,
+                          query: todoInfo,
+                        }}
+                      >
                         {todo.title}
                       </Link>
                     </p>
@@ -135,8 +140,8 @@ const TodoList: React.FC = () => {
                   <td className="text-center">
                     <select
                       value={todo.priority}
-                      className="border border-red-400 outline-none rounded-md
-                      text-xs p-1"
+                      className="border border-red-400 outline-none rounded-lg
+                      text-base p-2"
                       onChange={(e) => e.target.value}
                     >
                       <option value="High">High</option>
@@ -144,8 +149,8 @@ const TodoList: React.FC = () => {
                       <option value="Low">Low</option>
                     </select>
                   </td>
-                  <td className="text-xs text-center">{todo.created_at}</td>
-                  <td className="text-xs text-center">{todo.updated_at}</td>
+                  <td className="text-sm text-center">{todo.created_at}</td>
+                  <td className="text-sm text-center">{todo.updated_at}</td>
                   <td className=" text-center py-3">
                     <button onClick={() => handleEdit(todo.id)}>
                       <svg
