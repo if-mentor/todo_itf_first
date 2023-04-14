@@ -3,8 +3,8 @@ import { deepGreenButton } from "./commonClass/ButtonClass";
 import { inputClass, textareaClass } from "./commonClass/fillOutClass";
 import { useState } from "react";
 import { db } from "../../../lib/firebase";
-import { doc, setDoc } from "firebase/firestore";
-import dayjs from "dayjs";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 
 export const EditTodoPage = () => {
   const router = useRouter();
@@ -17,7 +17,6 @@ export const EditTodoPage = () => {
   ) => {
     const { name, value } = e.target;
     setTodo((prevForm) => ({ ...prevForm, [name]: value }));
-    console.log(todo);
   };
 
   const handlePriorityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +26,7 @@ export const EditTodoPage = () => {
   const handleUpdate = async () => {
     if (getData.id !== undefined) {
       if (todo.created_at !== undefined) {
+        const unixTime = Number(todo.created_at);
         const selectedId = getData.id as string;
         const docRef = doc(db, "todos", selectedId);
         const payload = {
@@ -34,12 +34,12 @@ export const EditTodoPage = () => {
           priority: todo.priority,
           title: todo.title,
           detail: todo.detail,
-          //dayjsの記述がわからないので、いったんcreated_atも更新
-          created_at: new Date(),
-          updated_at: new Date(),
+          created_at: Timestamp.fromMillis(unixTime * 1000),
+          updated_at: Timestamp.fromDate(new Date()),
           draft: false,
         };
         await setDoc(docRef, payload);
+        console.log(new Date());
         router.push("/");
       }
     }

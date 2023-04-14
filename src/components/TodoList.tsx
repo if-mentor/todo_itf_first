@@ -52,8 +52,6 @@ const TodoList: React.FC = () => {
     });
   }, []);
 
-  const handleChangeStatus = () => {};
-
   const handleEdit = async (selectedId: string) => {
     const docRef = doc(db, "todos", selectedId);
     const docSnap = await getDoc(docRef);
@@ -69,6 +67,7 @@ const TodoList: React.FC = () => {
         title: data.title,
         updated_at: data.updated_at.seconds,
       };
+      console.log(selectedTodo);
       router.push({
         pathname: "/edit",
         query: selectedTodo,
