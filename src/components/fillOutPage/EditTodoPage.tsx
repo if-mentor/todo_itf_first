@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
-import { deepGreenButton } from "./commonClass/ButtonClass";
-import { inputClass, textareaClass } from "./commonClass/fillOutClass";
+import { deepGreenButton } from "../commonParts/ButtonClass";
+import { inputClass, textareaClass } from "../commonParts/fillOutClass";
 import { useState } from "react";
 import { db } from "../../../lib/firebase";
 import { doc, updateDoc } from "firebase/firestore";
