@@ -3,14 +3,13 @@ import { deepGreenButton } from "./commonClass/ButtonClass";
 import { inputClass, textareaClass } from "./commonClass/fillOutClass";
 import { useState } from "react";
 import { db } from "../../../lib/firebase";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { doc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
 import { Timestamp } from "firebase/firestore";
 
 export const EditTodoPage = () => {
   const router = useRouter();
   const getData = router.query;
   const [todo, setTodo] = useState(getData);
-  console.log(todo);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -26,7 +25,6 @@ export const EditTodoPage = () => {
   const handleUpdate = async () => {
     if (getData.id !== undefined) {
       if (todo.created_at !== undefined) {
-        const unixTime = Number(todo.created_at);
         const selectedId = getData.id as string;
         const docRef = doc(db, "todos", selectedId);
         const payload = {
@@ -34,12 +32,9 @@ export const EditTodoPage = () => {
           priority: todo.priority,
           title: todo.title,
           detail: todo.detail,
-          created_at: Timestamp.fromMillis(unixTime * 1000),
-          updated_at: Timestamp.fromDate(new Date()),
-          draft: false,
+          updated_at: new Date(),
         };
-        await setDoc(docRef, payload);
-        console.log(new Date());
+        await updateDoc(docRef, payload);
         router.push("/");
       }
     }
