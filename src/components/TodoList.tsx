@@ -57,13 +57,10 @@ const TodoList: React.FC = () => {
     const docSnap = await getDoc(docRef);
     const data = docSnap.data();
     if (data) {
-      const selectedTodo: Todo = {
+      const selectedTodo: Omit<Todo, "status" | "draft" | "created_at"> = {
         id: selectedId,
-        draft: data.draft,
-        created_at: data.created_at.seconds,
         priority: data.priority,
         detail: data.detail,
-        status: data.status,
         title: data.title,
         updated_at: data.updated_at.seconds,
       };

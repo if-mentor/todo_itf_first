@@ -3,8 +3,7 @@ import { deepGreenButton } from "./commonClass/ButtonClass";
 import { inputClass, textareaClass } from "./commonClass/fillOutClass";
 import { useState } from "react";
 import { db } from "../../../lib/firebase";
-import { doc, serverTimestamp, setDoc, updateDoc } from "firebase/firestore";
-import { Timestamp } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 
 export const EditTodoPage = () => {
   const router = useRouter();
@@ -24,19 +23,16 @@ export const EditTodoPage = () => {
 
   const handleUpdate = async () => {
     if (getData.id !== undefined) {
-      if (todo.created_at !== undefined) {
-        const selectedId = getData.id as string;
-        const docRef = doc(db, "todos", selectedId);
-        const payload = {
-          status: "NOT STARTED",
-          priority: todo.priority,
-          title: todo.title,
-          detail: todo.detail,
-          updated_at: new Date(),
-        };
-        await updateDoc(docRef, payload);
-        router.push("/");
-      }
+      const selectedId = getData.id as string;
+      const docRef = doc(db, "todos", selectedId);
+      const payload = {
+        priority: todo.priority,
+        title: todo.title,
+        detail: todo.detail,
+        updated_at: new Date(),
+      };
+      await updateDoc(docRef, payload);
+      router.push("/");
     }
   };
 
