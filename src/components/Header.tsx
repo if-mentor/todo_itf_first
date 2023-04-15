@@ -23,7 +23,7 @@ const Header = () => {
   return (
     <header className='w-full bg-green-400 text-4xl font-bold'>
       <div className='max-w-5xl mx-auto py-2 flex justify-between'>
-        <div className='mt-3'>TODO</div>
+        <Link href="/" className='mt-3'>TODO</Link>
         
         <div className='text-xl mt-2.5'>
           {user !== 'GuestAccount'?(
