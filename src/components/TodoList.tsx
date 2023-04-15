@@ -35,7 +35,6 @@ const TodoList: React.FC = () => {
   const router = useRouter();
   const [todos, setTodos] = useState<Todo[]>([]);
 
-  // todosにfirestoreのデータを追加
   useEffect(() => {
     const q = query(collection(db, "todos"), orderBy("created_at"));
     onSnapshot(q, (snapshot) => {
@@ -132,6 +131,11 @@ const TodoList: React.FC = () => {
     }
   };
 
+  const handleChangePriority = async (priority: string, selectedId: string) => {
+    const docRef = doc(db, "todos", selectedId);
+    await updateDoc(docRef, { priority: priority });
+  };
+
   return (
     <div className="text-2xl max-w-5xl mx-auto py-2 flex justify-between font-bold">
       <table className="w-full table-auto my-3">
@@ -147,7 +151,6 @@ const TodoList: React.FC = () => {
         </thead>
         <tbody>
           {todos.map((todo: Todo) => {
-            // [id].tsxに送るクエリ部分
             const todoInfo: Todo = {
               id: todo.id,
               title: todo.title,
@@ -157,14 +160,11 @@ const TodoList: React.FC = () => {
               created_at: todo.created_at,
               updated_at: todo.updated_at,
             };
-            // draftがfalseの投稿のみ表示
             if (!todo.draft) {
               return (
-                // key修正済
                 <tr className="border-b" key={todo.id}>
                   <td className="text-left py-3 w-[384px]">
                     <p className="text-base w-[384px] truncate">
-                      {/* firebaseのデータを引っ張るときに[id]ページを設定し、投稿ごとの詳細ページに移動する */}
                       <Link
                         href={{
                           pathname: `/todos/${todo.id}`,
@@ -179,13 +179,19 @@ const TodoList: React.FC = () => {
                   <td className="text-center">
                     <select
                       value={todo.priority}
+                      key={todo.created_at}
                       className="border border-red-400 outline-none rounded-lg
                       text-base p-2"
-                      onChange={(e) => e.target.value}
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                        const selectedPriority = e.target.value;
+                        handleChangePriority(selectedPriority, todo.id);
+                      }}
                     >
-                      <option value="High">High</option>
-                      <option value="Middle">Middle</option>
-                      <option value="Low">Low</option>
+                      {["High", "Middle", "Low"].map((value) => (
+                        <option key={value} value={value}>
+                          {value}
+                        </option>
+                      ))}
                     </select>
                   </td>
                   <td className="text-sm text-center">{todo.created_at}</td>
