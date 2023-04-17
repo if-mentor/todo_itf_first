@@ -6,12 +6,20 @@ import {
   onSnapshot,
   orderBy,
   query,
+  updateDoc,
 } from "firebase/firestore";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { db } from "../../lib/firebase";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
+import { EditPencilButton } from "./commonParts/EditPencilButton";
+import { DeleteTrashButton } from "./commonParts/DeleteTrashButton";
+import {
+  statusDoing,
+  statusDone,
+  statusNotStarted,
+} from "./commonParts/ButtonClass";
 
 export type Todo = {
   id: string;
@@ -27,7 +35,6 @@ const TodoList: React.FC = () => {
   const router = useRouter();
   const [todos, setTodos] = useState<Todo[]>([]);
 
-  // todosにfirestoreのデータを追加
   useEffect(() => {
     const q = query(collection(db, "todos"), orderBy("created_at"));
     onSnapshot(q, (snapshot) => {
@@ -57,16 +64,14 @@ const TodoList: React.FC = () => {
     const docSnap = await getDoc(docRef);
     const data = docSnap.data();
     if (data) {
-      const selectedTodo: Todo = {
+      const selectedTodo: Omit<Todo, "status" | "draft" | "created_at"> = {
         id: selectedId,
-        draft: data.draft,
-        created_at: data.created_at.seconds,
         priority: data.priority,
         detail: data.detail,
-        status: data.status,
         title: data.title,
         updated_at: data.updated_at.seconds,
       };
+      console.log(selectedTodo);
       router.push({
         pathname: "/edit",
         query: selectedTodo,
@@ -78,12 +83,65 @@ const TodoList: React.FC = () => {
     deleteDoc(doc(db, "todos", selectedId));
   };
 
+  const SwitchButton = (status: string, selectedId: string) => {
+    switch (status) {
+      case "NOT STARTED":
+        return (
+          <button
+            className={statusNotStarted}
+            onClick={() => handleChangeStatus(status, selectedId)}
+          >
+            NOT STARTED
+          </button>
+        );
+      case "DOING":
+        return (
+          <button
+            className={statusDoing}
+            onClick={() => handleChangeStatus(status, selectedId)}
+          >
+            DOING
+          </button>
+        );
+      case "DONE":
+        return (
+          <button
+            className={statusDone}
+            onClick={() => handleChangeStatus(status, selectedId)}
+          >
+            DONE
+          </button>
+        );
+    }
+  };
+
+  const handleChangeStatus = async (status: string, selectedId: string) => {
+    const statusInfo: string[] = ["NOT STARTED", "DOING", "DONE"];
+    const docRef = doc(db, "todos", selectedId);
+    switch (status) {
+      case statusInfo[0]:
+        await updateDoc(docRef, { status: statusInfo[1] });
+        break;
+      case statusInfo[1]:
+        await updateDoc(docRef, { status: statusInfo[2] });
+        break;
+      case statusInfo[2]:
+        await updateDoc(docRef, { status: statusInfo[0] });
+        break;
+    }
+  };
+
+  const handleChangePriority = async (priority: string, selectedId: string) => {
+    const docRef = doc(db, "todos", selectedId);
+    await updateDoc(docRef, { priority: priority });
+  };
+
   return (
-    <div className="max-w-5xl mx-auto py-2 flex justify-between">
+    <div className="text-2xl max-w-5xl mx-auto py-2 flex justify-between font-bold">
       <table className="w-full table-auto my-3">
         <thead className="bg-[#68D391]">
           <tr>
-            <th className="text-left pl-2 py-2">Task</th>
+            <th className="text-left pl-2 py-2 w-[384px]">Task</th>
             <th>Status</th>
             <th>Priority</th>
             <th>Create</th>
@@ -93,7 +151,6 @@ const TodoList: React.FC = () => {
         </thead>
         <tbody>
           {todos.map((todo: Todo) => {
-            // [id].tsxに送るクエリ部分
             const todoInfo: Todo = {
               id: todo.id,
               title: todo.title,
@@ -101,80 +158,50 @@ const TodoList: React.FC = () => {
               status: todo.status,
               priority: todo.priority,
               created_at: todo.created_at,
-              updated_at: todo.updated_at
-            }
-            // draftがfalseの投稿のみ表示
+              updated_at: todo.updated_at,
+            };
             if (!todo.draft) {
               return (
-                // key修正済
                 <tr className="border-b" key={todo.id}>
-                  <td className="text-left py-3">
-                    <p className="text-sm">
-                      {/* firebaseのデータを引っ張るときに[id]ページを設定し、投稿ごとの詳細ページに移動する */}
-                      <Link href={{ pathname: `/todos/${todo.id}`, query: todoInfo}}>
+                  <td className="text-left py-3 w-[384px]">
+                    <p className="text-base w-[384px] truncate">
+                      <Link
+                        href={{
+                          pathname: `/todos/${todo.id}`,
+                          query: todoInfo,
+                        }}
+                      >
                         {todo.title}
                       </Link>
                     </p>
                   </td>
-                  <td>
-                    <p
-                      className={`border border-black outline-none rounded-full
-                        font-bold py-1 text-center
-                        ${
-                          todo.status === "NOT STARTED"
-                            ? "text-[3px] bg-[#F0FFF4]"
-                            : todo.status === "DOING"
-                            ? "text-xs bg-[#25855A] text-white"
-                            : "text-xs bg-[#68D391]"
-                        }
-                      `}
-                    >
-                      {todo.status}
-                    </p>
-                  </td>
+                  <td>{SwitchButton(todo.status, todo.id)}</td>
                   <td className="text-center">
                     <select
                       value={todo.priority}
-                      className="border border-red-400 outline-none rounded-md
-                      text-xs p-1"
-                      onChange={(e) => e.target.value}
+                      key={todo.created_at}
+                      className="border border-red-400 outline-none rounded-lg
+                      text-base p-2"
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                        const selectedPriority = e.target.value;
+                        handleChangePriority(selectedPriority, todo.id);
+                      }}
                     >
-                      <option value="High">High</option>
-                      <option value="Middle">Middle</option>
-                      <option value="Low">Low</option>
+                      {["High", "Middle", "Low"].map((value) => (
+                        <option key={value} value={value}>
+                          {value}
+                        </option>
+                      ))}
                     </select>
                   </td>
-                  <td className="text-xs text-center">{todo.created_at}</td>
-                  <td className="text-xs text-center">{todo.updated_at}</td>
+                  <td className="text-sm text-center">{todo.created_at}</td>
+                  <td className="text-sm text-center">{todo.updated_at}</td>
                   <td className=" text-center py-3">
                     <button onClick={() => handleEdit(todo.id)}>
-                      <svg
-                        className="h-4 w-4 text-gray-500 mr-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                        />
-                      </svg>
+                      <EditPencilButton />
                     </button>
                     <button onClick={() => handleDelete(todo.id)}>
-                      <svg
-                        className="h-4 w-4 text-gray-500"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <polyline points="3 6 5 6 21 6" />
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                      </svg>
+                      <DeleteTrashButton />
                     </button>
                   </td>
                 </tr>

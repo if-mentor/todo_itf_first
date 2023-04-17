@@ -2,8 +2,8 @@ import { addDoc, collection } from "firebase/firestore";
 import { useState } from "react";
 import { db } from "../../../lib/firebase";
 import { useRouter } from "next/router";
-import { deepGreenButton, lightpinkButton } from "./commonClass/ButtonClass";
-import { inputClass, textareaClass } from "./commonClass/fillOutClass";
+import { deepGreenButton, lightpinkButton } from "../commonParts/ButtonClass";
+import { inputClass, textareaClass } from "../commonParts/fillOutClass";
 
 export const NewTodoPage = () => {
   const router = useRouter();

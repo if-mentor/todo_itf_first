@@ -1,23 +1,20 @@
 import { useRouter } from "next/router";
-import { deepGreenButton } from "./commonClass/ButtonClass";
-import { inputClass, textareaClass } from "./commonClass/fillOutClass";
+import { deepGreenButton } from "../commonParts/ButtonClass";
+import { inputClass, textareaClass } from "../commonParts/fillOutClass";
 import { useState } from "react";
 import { db } from "../../../lib/firebase";
-import { doc, setDoc } from "firebase/firestore";
-import dayjs from "dayjs";
+import { doc, updateDoc } from "firebase/firestore";
 
 export const EditTodoPage = () => {
   const router = useRouter();
   const getData = router.query;
   const [todo, setTodo] = useState(getData);
-  console.log(todo);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setTodo((prevForm) => ({ ...prevForm, [name]: value }));
-    console.log(todo);
   };
 
   const handlePriorityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,22 +23,16 @@ export const EditTodoPage = () => {
 
   const handleUpdate = async () => {
     if (getData.id !== undefined) {
-      if (todo.created_at !== undefined) {
-        const selectedId = getData.id as string;
-        const docRef = doc(db, "todos", selectedId);
-        const payload = {
-          status: "NOT STARTED",
-          priority: todo.priority,
-          title: todo.title,
-          detail: todo.detail,
-          //dayjsの記述がわからないので、いったんcreated_atも更新
-          created_at: new Date(),
-          updated_at: new Date(),
-          draft: false,
-        };
-        await setDoc(docRef, payload);
-        router.push("/");
-      }
+      const selectedId = getData.id as string;
+      const docRef = doc(db, "todos", selectedId);
+      const payload = {
+        priority: todo.priority,
+        title: todo.title,
+        detail: todo.detail,
+        updated_at: new Date(),
+      };
+      await updateDoc(docRef, payload);
+      router.push("/");
     }
   };
 

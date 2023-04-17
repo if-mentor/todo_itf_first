@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { lightGreenButton } from "./commonClass/ButtonClass";
+import { lightGreenButton } from "../commonParts/ButtonClass";
 
 type FillOutPageTopProps = {
   title: string;
