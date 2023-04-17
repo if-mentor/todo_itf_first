@@ -42,12 +42,12 @@ const ShowTodo: React.FC<TodoShowProps> = (props) => {
       <div className="p-3">
         <p className="bg-[#68D391] text-[24px]">TITLE</p>
         {/* TODOのタイトルを取ってくる */}
-        <p className="text-xl">{title}</p>
+        <p className="text-xl break-words">{title}</p>
       </div>
       <div className="p-3 min-h-[310px]">
         <p className="bg-[#68D391] text-[24px]">DETAIL</p>
         {/* TODOのディティールを取ってくる */}
-        <p className="text-xl">{detail}</p>
+        <p className="text-xl break-words">{detail}</p>
       </div>
       <div className="m-3 flex justify-between">
         <button
@@ -56,8 +56,8 @@ const ShowTodo: React.FC<TodoShowProps> = (props) => {
         >
           <span className="text-[18px] pr-[11px]">Edit</span>
             <svg className="h-5 w-5 text-black mt-1"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-          </svg>
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+            </svg>
         </button>
           <div className="colums-1 mr-5">
             <p className="text-md">Create</p>
