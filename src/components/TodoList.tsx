@@ -33,8 +33,8 @@ export type Todo = {
 };
 
 type TodoListProps = {
-  filterStatus: string;
-  filterPriority: string;
+  filterStatus: "NOT STARTED" | "DOING" | "DONE" | "";
+  filterPriority: "High" | "Middle" | "Low" | "";
 }
 const TodoList: React.FC<TodoListProps> = ({filterStatus, filterPriority}) => {
   const router = useRouter();
@@ -67,6 +67,7 @@ const TodoList: React.FC<TodoListProps> = ({filterStatus, filterPriority}) => {
     });
     const filteringTodos = () => {
       console.log(filterStatus);
+      console.log(filterPriority);
       if (filterStatus !== "" && filterPriority !== "") {
         switch (filterStatus) {
           case 'NOT STARTED':
@@ -83,18 +84,18 @@ const TodoList: React.FC<TodoListProps> = ({filterStatus, filterPriority}) => {
         }
         switch (filterPriority) {
           case 'High':
-            setFilterPriorityTodos(todos.filter((todo) => todo.priority === 'High'));
+            setFilterPriorityTodos(filterStatusTodos.filter((todo) => todo.priority === 'High'));
             break;
           case 'Middle':
-            setFilterPriorityTodos(todos.filter((todo) => todo.priority === 'Middle'));
+            setFilterPriorityTodos(filterStatusTodos.filter((todo) => todo.priority === 'Middle'));
             break;
           case 'Low':
-            setFilterPriorityTodos(todos.filter((todo) => todo.priority === 'Low'));
+            setFilterPriorityTodos(filterStatusTodos.filter((todo) => todo.priority === 'Low'));
             break;
           default:
-            setFilterPriorityTodos(todos);
+            setFilterPriorityTodos(filterStatusTodos);
         }
-        setFilteredTodos([...filterStatusTodos]);
+        setFilteredTodos(filterPriorityTodos);
       } else if (filterStatus !== "") {
         switch (filterStatus) {
           case 'NOT STARTED':

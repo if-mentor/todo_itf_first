@@ -10,14 +10,14 @@ export default function Home() {
     
     <>
       <SearchForm
-        filterStatus={filterStatus}
+        filterStatus={filterStatus as "NOT STARTED" | "DOING" | "DONE" | ""}
         setFilterStatus={setFilterStatus}
-        filterPriority={filterPriority}
+        filterPriority={filterPriority as "High" | "Middle" | "Low" | ""}
         setFilterPriority={setFilterPriority}
       />
       <TodoList
-        filterStatus={filterStatus}
-        filterPriority={filterPriority}
+        filterStatus={filterStatus as "NOT STARTED" | "DOING" | "DONE" | ""}
+        filterPriority={filterPriority as "High" | "Middle" | "Low" | ""}
       />
     </>
   );

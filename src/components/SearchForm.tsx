@@ -2,14 +2,13 @@ import Link from "next/link"
 import { Dispatch, SetStateAction } from "react";
 
 export type SearchProps = {
-  filterStatus: string;
+  filterStatus: "NOT STARTED" | "DOING" | "DONE" | "";
   setFilterStatus: Dispatch<SetStateAction<string>>;
-  filterPriority: string;
+  filterPriority: "High" | "Middle" | "Low" | "";
   setFilterPriority: Dispatch<SetStateAction<string>>;
 }
 
 const SearchForm: React.FC<SearchProps> = ({filterStatus, setFilterStatus, filterPriority, setFilterPriority}) => {
-
 
   return (
     <div className="w-full font-bold">
