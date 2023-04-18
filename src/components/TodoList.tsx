@@ -31,9 +31,17 @@ export type Todo = {
   created_at: string;
   updated_at: string;
 };
-const TodoList: React.FC = () => {
+
+type TodoListProps = {
+  filterStatus: string;
+  filterPriority: string;
+}
+const TodoList: React.FC<TodoListProps> = ({filterStatus, filterPriority}) => {
   const router = useRouter();
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [filteredTodos, setFilteredTodos] = useState<Todo[]>([])
+  const [filterStatusTodos, setFilterStatusTodos] = useState<Todo[]>([]);
+  const [filterPriorityTodos, setFilterPriorityTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
     const q = query(collection(db, "todos"), orderBy("created_at"));
@@ -57,7 +65,77 @@ const TodoList: React.FC = () => {
         })
       );
     });
-  }, []);
+    const filteringTodos = () => {
+      console.log(filterStatus);
+      if (filterStatus !== "" && filterPriority !== "") {
+        switch (filterStatus) {
+          case 'NOT STARTED':
+            setFilterStatusTodos(todos.filter((todo) => todo.status === 'NOT STARTED'));
+            break;
+          case 'DOING':
+            setFilterStatusTodos(todos.filter((todo) => todo.status === 'DOING'));
+            break;
+          case 'DONE':
+            setFilterStatusTodos(todos.filter((todo) => todo.status === 'DONE'));
+            break;
+          default:
+            setFilterStatusTodos(todos);
+        }
+        switch (filterPriority) {
+          case 'High':
+            setFilterPriorityTodos(todos.filter((todo) => todo.priority === 'High'));
+            break;
+          case 'Middle':
+            setFilterPriorityTodos(todos.filter((todo) => todo.priority === 'Middle'));
+            break;
+          case 'Low':
+            setFilterPriorityTodos(todos.filter((todo) => todo.priority === 'Low'));
+            break;
+          default:
+            setFilterPriorityTodos(todos);
+        }
+        setFilteredTodos([...filterStatusTodos]);
+      } else if (filterStatus !== "") {
+        switch (filterStatus) {
+          case 'NOT STARTED':
+            setFilterStatusTodos(todos.filter((todo) => todo.status === 'NOT STARTED'));
+            break;
+          case 'DOING':
+            setFilterStatusTodos(todos.filter((todo) => todo.status === 'DOING'));
+            break;
+          case 'DONE':
+            setFilterStatusTodos(todos.filter((todo) => todo.status === 'DONE'));
+            break;
+          default:
+            setFilterStatusTodos(todos);
+        }
+        setFilteredTodos([...filterStatusTodos]);
+        
+      } else if (filterPriority !== "") {
+        switch (filterPriority) {
+          case 'High':
+            setFilterPriorityTodos(todos.filter((todo) => todo.priority === 'High'));
+            break;
+          case 'Middle':
+            setFilterPriorityTodos(todos.filter((todo) => todo.priority === 'Middle'));
+            break;
+          case 'Low':
+            setFilterPriorityTodos(todos.filter((todo) => todo.priority === 'Low'));
+            break;
+          default:
+            setFilterPriorityTodos(todos);
+        }
+        setFilteredTodos([...filterPriorityTodos]);
+      } else {
+        setFilteredTodos(todos);
+      }
+    }
+    filteringTodos();
+  }, [filterStatus, filterPriority]);
+
+  // console.log(filterStatusTodos);
+  // console.log(filterPriorityTodos);
+  console.log(filteredTodos);
 
   const handleEdit = async (selectedId: string) => {
     const docRef = doc(db, "todos", selectedId);
@@ -150,7 +228,7 @@ const TodoList: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {todos.map((todo: Todo) => {
+          {filteredTodos.map((todo: Todo) => {
             const todoInfo: Todo = {
               id: todo.id,
               title: todo.title,

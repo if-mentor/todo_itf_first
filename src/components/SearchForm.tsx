@@ -1,6 +1,16 @@
 import Link from "next/link"
+import { Dispatch, SetStateAction } from "react";
 
-const SearchForm = () => {
+export type SearchProps = {
+  filterStatus: string;
+  setFilterStatus: Dispatch<SetStateAction<string>>;
+  filterPriority: string;
+  setFilterPriority: Dispatch<SetStateAction<string>>;
+}
+
+const SearchForm: React.FC<SearchProps> = ({filterStatus, setFilterStatus, filterPriority, setFilterPriority}) => {
+
+
   return (
     <div className="w-full font-bold">
       <div className="text-[28px] max-w-5xl mx-auto py-2 flex justify-between">
@@ -52,29 +62,27 @@ const SearchForm = () => {
         <div>
           <p>STATUS</p>
           <select
-            name=""
-            id=""
+            value={filterStatus}
             className="border border-solid border-black rounded-md px-5 py-0.5"
-            onChange={(e) => e.target.value}
+            onChange={(e) => setFilterStatus(e.target.value)}
           >
-            <option>----------</option>
-            <option>NOT STARTED</option>
-            <option>DOING</option>
-            <option>DONE</option>
+            <option value="">----------</option>
+            <option value='NOT STARTED'>NOT STARTED</option>
+            <option value='DOING'>DOING</option>
+            <option value='DONE'>DONE</option>
           </select>
         </div>
         <div>
           <p>PRIORITY</p>
           <select
             className="border border-solid border-black rounded-md px-4 py-0.5"
-            name=""
-            id=""
-            onChange={(e) => e.target.value}
+            value={filterPriority}
+            onChange={(e) => setFilterPriority(e.target.value)}
           >
-            <option>----------</option>
-            <option>High</option>
-            <option>Middle</option>
-            <option>Low</option>
+            <option value="">----------</option>
+            <option value='High'>High</option>
+            <option value='Middle'>Middle</option>
+            <option value='Low'>Low</option>
           </select>
         </div>
         <div className="border-solid">
@@ -87,5 +95,4 @@ const SearchForm = () => {
     </div>
   );
 }
-
 export default SearchForm
