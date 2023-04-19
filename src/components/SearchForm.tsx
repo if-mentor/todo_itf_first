@@ -1,6 +1,31 @@
 import Link from "next/link"
+import { Dispatch, SetStateAction } from "react";
 
-const SearchForm = () => {
+export type FilterStatus = "NOT STARTED" | "DOING" | "DONE" | "";
+export type FilterPriority = "High" | "Middle" | "Low" | "";
+
+export type SearchProps = {
+  filterStatus: FilterStatus;
+  setFilterStatus: Dispatch<SetStateAction<FilterStatus>>;
+  filterPriority: FilterPriority;
+  setFilterPriority: Dispatch<SetStateAction<FilterPriority>>;
+}
+
+const SearchForm: React.FC<SearchProps> = ({filterStatus, setFilterStatus, filterPriority, setFilterPriority}) => {
+  
+const FILTERSTATUSOPTIONS = [
+  {value: "", title: "----------"},
+  {value: "NOT STARTED", title: "NOT STARTED"},
+  {value: "DOING", title: "DOING"},
+  {value: "DONE", title: "DONE"} 
+]
+const FILTERPRIORITYOPTIONS = [
+  {value: "", title: "----------"},
+  {value: "High", title: "High"},
+  {value: "Middle", title: "Middle"},
+  {value: "Low", title: "Low"} 
+]
+
   return (
     <div className="w-full font-bold">
       <div className="text-[28px] max-w-5xl mx-auto py-2 flex justify-between">
@@ -52,29 +77,21 @@ const SearchForm = () => {
         <div>
           <p>STATUS</p>
           <select
-            name=""
-            id=""
+            value={filterStatus}
             className="border border-solid border-black rounded-md px-5 py-0.5"
-            onChange={(e) => e.target.value}
+            onChange={(e) => setFilterStatus(e.target.value as FilterStatus)}
           >
-            <option>----------</option>
-            <option>NOT STARTED</option>
-            <option>DOING</option>
-            <option>DONE</option>
+            {FILTERSTATUSOPTIONS.map(({value, title}) => <option value={value} key={title}>{title}</option>)}
           </select>
         </div>
         <div>
           <p>PRIORITY</p>
           <select
             className="border border-solid border-black rounded-md px-4 py-0.5"
-            name=""
-            id=""
-            onChange={(e) => e.target.value}
+            value={filterPriority}
+            onChange={(e) => setFilterPriority(e.target.value as FilterPriority)}
           >
-            <option>----------</option>
-            <option>High</option>
-            <option>Middle</option>
-            <option>Low</option>
+            {FILTERPRIORITYOPTIONS.map(({value, title}) => <option value={value} key={title}>{title}</option>)}
           </select>
         </div>
         <div className="border-solid">
@@ -87,5 +104,4 @@ const SearchForm = () => {
     </div>
   );
 }
-
 export default SearchForm
