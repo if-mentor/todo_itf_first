@@ -21,6 +21,7 @@ import {
   statusDone,
   statusNotStarted,
 } from "./commonParts/ButtonClass";
+import { FilterPriority, FilterStatus } from "./SearchForm";
 
 export type Todo = {
   id: string;
@@ -34,8 +35,8 @@ export type Todo = {
 };
 
 type TodoListProps = {
-  filterStatus: "NOT STARTED" | "DOING" | "DONE" | "";
-  filterPriority: "High" | "Middle" | "Low" | "";
+  filterStatus: FilterStatus;
+  filterPriority: FilterPriority;
 }
 const TodoList: React.FC<TodoListProps> = ({filterStatus, filterPriority}) => {
   const router = useRouter();
