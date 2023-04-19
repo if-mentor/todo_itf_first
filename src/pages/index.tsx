@@ -1,23 +1,23 @@
-import SearchForm from "@/components/SearchForm";
+import SearchForm, { FilterPriority, FilterStatus } from "@/components/SearchForm";
 import TodoList from "@/components/TodoList";
 import { useState } from "react";
 
 export default function Home() {
-  const [filterStatus, setFilterStatus] = useState("");
-  const [filterPriority, setFilterPriority] = useState("");
+  const [filterStatus, setFilterStatus] = useState<FilterStatus>("");
+  const [filterPriority, setFilterPriority] = useState<FilterPriority>("");
   console.log(filterStatus)
   return (
     
     <>
       <SearchForm
-        filterStatus={filterStatus as "NOT STARTED" | "DOING" | "DONE" | ""}
+        filterStatus={filterStatus}
         setFilterStatus={setFilterStatus}
-        filterPriority={filterPriority as "High" | "Middle" | "Low" | ""}
+        filterPriority={filterPriority}
         setFilterPriority={setFilterPriority}
       />
       <TodoList
-        filterStatus={filterStatus as "NOT STARTED" | "DOING" | "DONE" | ""}
-        filterPriority={filterPriority as "High" | "Middle" | "Low" | ""}
+        filterStatus={filterStatus}
+        filterPriority={filterPriority}
       />
     </>
   );

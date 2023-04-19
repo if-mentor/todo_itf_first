@@ -1,4 +1,5 @@
 import {
+  Timestamp,
   collection,
   deleteDoc,
   doc,
@@ -40,8 +41,11 @@ const TodoList: React.FC<TodoListProps> = ({filterStatus, filterPriority}) => {
   const router = useRouter();
   const [todos, setTodos] = useState<Todo[]>([]);
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>([])
-  const [filterStatusTodos, setFilterStatusTodos] = useState<Todo[]>([]);
-  const [filterPriorityTodos, setFilterPriorityTodos] = useState<Todo[]>([]);
+
+  const formatDate = (date: Timestamp) => {
+    const toDatedDate = date.toDate();
+    return dayjs(toDatedDate).format("YYYY-MM-DD HH:mm");
+  }
 
   useEffect(() => {
     const q = query(collection(db, "todos"), orderBy("created_at"));
@@ -55,86 +59,31 @@ const TodoList: React.FC<TodoListProps> = ({filterStatus, filterPriority}) => {
             status: doc.data().status as "NOT STARTED" | "DOING" | "DONE",
             priority: doc.data().priority as "High" | "Middle" | "Low",
             draft: doc.data().draft as boolean,
-            created_at: dayjs(doc.data().created_at.toDate()).format(
-              "YYYY-MM-DD HH:mm"
-            ),
-            updated_at: dayjs(doc.data().updated_at.toDate()).format(
-              "YYYY-MM-DD HH:mm"
-            ),
+            created_at: formatDate(doc.data().created_at),
+            updated_at: formatDate(doc.data().updated_at)
           };
         })
       );
     });
-  }, []);
+  },[]);
+
   useEffect(() => {
-    const filteringTodos = () => {
-      if (filterStatus !== "" && filterPriority !== "") {
-        console.log(filterPriorityTodos, filterStatusTodos);
-        switch (filterStatus) {
-          case 'NOT STARTED':
-            setFilterStatusTodos(todos.filter((todo) => todo.status === 'NOT STARTED'));
-            break;
-          case 'DOING':
-            setFilterStatusTodos(todos.filter((todo) => todo.status === 'DOING'));
-            break;
-          case 'DONE':
-            setFilterStatusTodos(todos.filter((todo) => todo.status === 'DONE'));
-            break;
-          default:
-            setFilterStatusTodos(todos);
-        }
-        console.log(filterPriorityTodos, filterStatusTodos);
-        switch (filterPriority) {
-          case 'High':
-            setFilterPriorityTodos(filterStatusTodos.filter((todo) => todo.priority === 'High'));
-            break;
-          case 'Middle':
-            setFilterPriorityTodos(filterStatusTodos.filter((todo) => todo.priority === 'Middle'));
-            break;
-          case 'Low':
-            setFilterPriorityTodos(filterStatusTodos.filter((todo) => todo.priority === 'Low'));
-            break;
-          default:
-            setFilterPriorityTodos(filterStatusTodos);
-        }
-        setFilteredTodos(filterPriorityTodos);
-      } else if (filterStatus !== "") {
-        switch (filterStatus) {
-          case 'NOT STARTED':
-            setFilterStatusTodos(todos.filter((todo) => todo.status === 'NOT STARTED'));
-            break;
-          case 'DOING':
-            setFilterStatusTodos(todos.filter((todo) => todo.status === 'DOING'));
-            break;
-          case 'DONE':
-            setFilterStatusTodos(todos.filter((todo) => todo.status === 'DONE'));
-            break;
-          default:
-            setFilterStatusTodos(todos);
-        }
-        setFilteredTodos([...filterStatusTodos]);
-        
-      } else if (filterPriority !== "") {
-        switch (filterPriority) {
-          case 'High':
-            setFilterPriorityTodos(todos.filter((todo) => todo.priority === 'High'));
-            break;
-          case 'Middle':
-            setFilterPriorityTodos(todos.filter((todo) => todo.priority === 'Middle'));
-            break;
-          case 'Low':
-            setFilterPriorityTodos(todos.filter((todo) => todo.priority === 'Low'));
-            break;
-          default:
-            setFilterPriorityTodos(todos);
-        }
-        setFilteredTodos([...filterPriorityTodos]);
-      } else {
-        console.log(filterPriorityTodos, filterStatusTodos);
-        setFilteredTodos(todos);
-      }
+    if (filterStatus && filterPriority) {
+      const result = todos
+      .filter((compareStatus) => compareStatus.status === filterStatus)
+      .filter((comparePriority) => comparePriority.priority === filterPriority);
+      setFilteredTodos(result);
+    } else if (!filterStatus && filterPriority) {
+      const result = todos
+      .filter((comparePriority) => comparePriority.priority === filterPriority);
+      setFilteredTodos(result);
+    } else if (filterStatus && !filterPriority) {
+      const result = todos
+      .filter((compareStatus) => compareStatus.status === filterStatus);
+      setFilteredTodos(result);
+    } else {
+      setFilteredTodos(todos);
     }
-    filteringTodos();
   }, [filterStatus, filterPriority, todos]);
 
   const handleEdit = async (selectedId: string) => {
@@ -228,41 +177,41 @@ const TodoList: React.FC<TodoListProps> = ({filterStatus, filterPriority}) => {
           </tr>
         </thead>
         <tbody>
-          {filteredTodos.map((todo: Todo) => {
+          {filteredTodos.map(({id, title, detail, status, priority, created_at, updated_at, draft}: Todo) => {
             const todoInfo: Todo = {
-              id: todo.id,
-              title: todo.title,
-              detail: todo.detail,
-              status: todo.status,
-              priority: todo.priority,
-              created_at: todo.created_at,
-              updated_at: todo.updated_at,
+              id,
+              title,
+              detail,
+              status,
+              priority,
+              created_at,
+              updated_at,
             };
-            if (!todo.draft) {
+            if (!draft) {
               return (
-                <tr className="border-b" key={todo.id}>
+                <tr className="border-b" key={id}>
                   <td className="text-left py-3 w-[384px]">
                     <p className="text-base w-[384px] truncate">
                       <Link
                         href={{
-                          pathname: `/todos/${todo.id}`,
+                          pathname: `/todos/${id}`,
                           query: todoInfo,
                         }}
                       >
-                        {todo.title}
+                        {title}
                       </Link>
                     </p>
                   </td>
-                  <td>{SwitchButton(todo.status, todo.id)}</td>
+                  <td>{SwitchButton(status, id)}</td>
                   <td className="text-center">
                     <select
-                      value={todo.priority}
-                      key={todo.created_at}
+                      value={priority}
+                      key={created_at}
                       className="border border-red-400 outline-none rounded-lg
                       text-base p-2"
                       onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                         const selectedPriority = e.target.value;
-                        handleChangePriority(selectedPriority, todo.id);
+                        handleChangePriority(selectedPriority, id);
                       }}
                     >
                       {["High", "Middle", "Low"].map((value) => (
@@ -272,13 +221,13 @@ const TodoList: React.FC<TodoListProps> = ({filterStatus, filterPriority}) => {
                       ))}
                     </select>
                   </td>
-                  <td className="text-sm text-center">{todo.created_at}</td>
-                  <td className="text-sm text-center">{todo.updated_at}</td>
+                  <td className="text-sm text-center">{created_at}</td>
+                  <td className="text-sm text-center">{updated_at}</td>
                   <td className=" text-center py-3">
-                    <button onClick={() => handleEdit(todo.id)}>
+                    <button onClick={() => handleEdit(id)}>
                       <EditPencilButton />
                     </button>
-                    <button onClick={() => handleDelete(todo.id)}>
+                    <button onClick={() => handleDelete(id)}>
                       <DeleteTrashButton />
                     </button>
                   </td>

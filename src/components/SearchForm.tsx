@@ -1,14 +1,30 @@
 import Link from "next/link"
 import { Dispatch, SetStateAction } from "react";
 
+export type FilterStatus = "NOT STARTED" | "DOING" | "DONE" | "";
+export type FilterPriority = "High" | "Middle" | "Low" | "";
+
 export type SearchProps = {
-  filterStatus: "NOT STARTED" | "DOING" | "DONE" | "";
-  setFilterStatus: Dispatch<SetStateAction<string>>;
-  filterPriority: "High" | "Middle" | "Low" | "";
-  setFilterPriority: Dispatch<SetStateAction<string>>;
+  filterStatus: FilterStatus;
+  setFilterStatus: Dispatch<SetStateAction<FilterStatus>>;
+  filterPriority: FilterPriority;
+  setFilterPriority: Dispatch<SetStateAction<FilterPriority>>;
 }
 
 const SearchForm: React.FC<SearchProps> = ({filterStatus, setFilterStatus, filterPriority, setFilterPriority}) => {
+  
+const FILTERSTATUSOPTIONS = [
+  {value: "", title: "----------"},
+  {value: "NOT STARTED", title: "NOT STARTED"},
+  {value: "DOING", title: "DOING"},
+  {value: "DONE", title: "DONE"} 
+]
+const FILTERPRIORITYOPTIONS = [
+  {value: "", title: "----------"},
+  {value: "High", title: "High"},
+  {value: "Middle", title: "Middle"},
+  {value: "Low", title: "Low"} 
+]
 
   return (
     <div className="w-full font-bold">
@@ -63,12 +79,9 @@ const SearchForm: React.FC<SearchProps> = ({filterStatus, setFilterStatus, filte
           <select
             value={filterStatus}
             className="border border-solid border-black rounded-md px-5 py-0.5"
-            onChange={(e) => setFilterStatus(e.target.value)}
+            onChange={(e) => setFilterStatus(e.target.value as FilterStatus)}
           >
-            <option value="">----------</option>
-            <option value='NOT STARTED'>NOT STARTED</option>
-            <option value='DOING'>DOING</option>
-            <option value='DONE'>DONE</option>
+            {FILTERSTATUSOPTIONS.map(({value, title}) => <option value={value} key={title}>{title}</option>)}
           </select>
         </div>
         <div>
@@ -76,12 +89,9 @@ const SearchForm: React.FC<SearchProps> = ({filterStatus, setFilterStatus, filte
           <select
             className="border border-solid border-black rounded-md px-4 py-0.5"
             value={filterPriority}
-            onChange={(e) => setFilterPriority(e.target.value)}
+            onChange={(e) => setFilterPriority(e.target.value as FilterPriority)}
           >
-            <option value="">----------</option>
-            <option value='High'>High</option>
-            <option value='Middle'>Middle</option>
-            <option value='Low'>Low</option>
+            {FILTERPRIORITYOPTIONS.map(({value, title}) => <option value={value} key={title}>{title}</option>)}
           </select>
         </div>
         <div className="border-solid">
