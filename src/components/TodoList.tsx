@@ -65,10 +65,11 @@ const TodoList: React.FC<TodoListProps> = ({filterStatus, filterPriority}) => {
         })
       );
     });
+  }, []);
+  useEffect(() => {
     const filteringTodos = () => {
-      console.log(filterStatus);
-      console.log(filterPriority);
       if (filterStatus !== "" && filterPriority !== "") {
+        console.log(filterPriorityTodos, filterStatusTodos);
         switch (filterStatus) {
           case 'NOT STARTED':
             setFilterStatusTodos(todos.filter((todo) => todo.status === 'NOT STARTED'));
@@ -82,6 +83,7 @@ const TodoList: React.FC<TodoListProps> = ({filterStatus, filterPriority}) => {
           default:
             setFilterStatusTodos(todos);
         }
+        console.log(filterPriorityTodos, filterStatusTodos);
         switch (filterPriority) {
           case 'High':
             setFilterPriorityTodos(filterStatusTodos.filter((todo) => todo.priority === 'High'));
@@ -128,15 +130,12 @@ const TodoList: React.FC<TodoListProps> = ({filterStatus, filterPriority}) => {
         }
         setFilteredTodos([...filterPriorityTodos]);
       } else {
+        console.log(filterPriorityTodos, filterStatusTodos);
         setFilteredTodos(todos);
       }
     }
     filteringTodos();
-  }, [filterStatus, filterPriority]);
-
-  // console.log(filterStatusTodos);
-  // console.log(filterPriorityTodos);
-  console.log(filteredTodos);
+  }, [filterStatus, filterPriority, todos]);
 
   const handleEdit = async (selectedId: string) => {
     const docRef = doc(db, "todos", selectedId);

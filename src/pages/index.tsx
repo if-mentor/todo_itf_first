@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function Home() {
   const [filterStatus, setFilterStatus] = useState("");
   const [filterPriority, setFilterPriority] = useState("");
- 
+  console.log(filterStatus)
   return (
     
     <>
