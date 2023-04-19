@@ -35,13 +35,14 @@ export type Todo = {
 type TodoListProps = {
   filterStatus: "NOT STARTED" | "DOING" | "DONE" | "";
   filterPriority: "High" | "Middle" | "Low" | "";
-}
-const TodoList: React.FC<TodoListProps> = ({filterStatus, filterPriority}) => {
+};
+const TodoList: React.FC<TodoListProps> = ({
+  filterStatus,
+  filterPriority,
+}) => {
   const router = useRouter();
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [filteredTodos, setFilteredTodos] = useState<Todo[]>([])
-  const [filterStatusTodos, setFilterStatusTodos] = useState<Todo[]>([]);
-  const [filterPriorityTodos, setFilterPriorityTodos] = useState<Todo[]>([]);
+  const [displayTodo, setDisplayTodo] = useState<Todo[]>([]);
 
   useEffect(() => {
     const q = query(collection(db, "todos"), orderBy("created_at"));
@@ -66,76 +67,122 @@ const TodoList: React.FC<TodoListProps> = ({filterStatus, filterPriority}) => {
       );
     });
   }, []);
+
+  ////テスト
   useEffect(() => {
-    const filteringTodos = () => {
-      if (filterStatus !== "" && filterPriority !== "") {
-        console.log(filterPriorityTodos, filterStatusTodos);
-        switch (filterStatus) {
-          case 'NOT STARTED':
-            setFilterStatusTodos(todos.filter((todo) => todo.status === 'NOT STARTED'));
-            break;
-          case 'DOING':
-            setFilterStatusTodos(todos.filter((todo) => todo.status === 'DOING'));
-            break;
-          case 'DONE':
-            setFilterStatusTodos(todos.filter((todo) => todo.status === 'DONE'));
-            break;
-          default:
-            setFilterStatusTodos(todos);
-        }
-        console.log(filterPriorityTodos, filterStatusTodos);
-        switch (filterPriority) {
-          case 'High':
-            setFilterPriorityTodos(filterStatusTodos.filter((todo) => todo.priority === 'High'));
-            break;
-          case 'Middle':
-            setFilterPriorityTodos(filterStatusTodos.filter((todo) => todo.priority === 'Middle'));
-            break;
-          case 'Low':
-            setFilterPriorityTodos(filterStatusTodos.filter((todo) => todo.priority === 'Low'));
-            break;
-          default:
-            setFilterPriorityTodos(filterStatusTodos);
-        }
-        setFilteredTodos(filterPriorityTodos);
-      } else if (filterStatus !== "") {
-        switch (filterStatus) {
-          case 'NOT STARTED':
-            setFilterStatusTodos(todos.filter((todo) => todo.status === 'NOT STARTED'));
-            break;
-          case 'DOING':
-            setFilterStatusTodos(todos.filter((todo) => todo.status === 'DOING'));
-            break;
-          case 'DONE':
-            setFilterStatusTodos(todos.filter((todo) => todo.status === 'DONE'));
-            break;
-          default:
-            setFilterStatusTodos(todos);
-        }
-        setFilteredTodos([...filterStatusTodos]);
-        
-      } else if (filterPriority !== "") {
-        switch (filterPriority) {
-          case 'High':
-            setFilterPriorityTodos(todos.filter((todo) => todo.priority === 'High'));
-            break;
-          case 'Middle':
-            setFilterPriorityTodos(todos.filter((todo) => todo.priority === 'Middle'));
-            break;
-          case 'Low':
-            setFilterPriorityTodos(todos.filter((todo) => todo.priority === 'Low'));
-            break;
-          default:
-            setFilterPriorityTodos(todos);
-        }
-        setFilteredTodos([...filterPriorityTodos]);
-      } else {
-        console.log(filterPriorityTodos, filterStatusTodos);
-        setFilteredTodos(todos);
-      }
+    if (filterStatus && filterPriority) {
+      const Result = todos
+        .filter((compareStatuse) => compareStatuse.status === filterStatus)
+        .filter(
+          (comparePriority) => comparePriority.priority === filterPriority
+        );
+      setDisplayTodo(Result);
+    } else if (!filterStatus && filterPriority) {
+      const Result = todos.filter(
+        (comparePriority) => comparePriority.priority === filterPriority
+      );
+      setDisplayTodo(Result);
+    } else if (filterStatus && !filterPriority) {
+      const Result = todos.filter(
+        (compareStatuse) => compareStatuse.status === filterStatus
+      );
+      setDisplayTodo(Result);
+    } else {
+      setDisplayTodo(todos);
     }
-    filteringTodos();
   }, [filterStatus, filterPriority, todos]);
+
+  // useEffect(() => {
+  //   const filteringTodos = () => {
+  //     if (filterStatus !== "" && filterPriority !== "") {
+  //       console.log(filterPriorityTodos, filterStatusTodos);
+  //       switch (filterStatus) {
+  //         case "NOT STARTED":
+  //           setFilterStatusTodos(
+  //             todos.filter((todo) => todo.status == "NOT STARTED")
+  //           );
+  //           break;
+  //         case "DOING":
+  //           setFilterStatusTodos(
+  //             todos.filter((todo) => todo.status == "DOING")
+  //           );
+  //           break;
+  //         case "DONE":
+  //           setFilterStatusTodos(todos.filter((todo) => todo.status == "DONE"));
+  //           break;
+  //         default:
+  //           setFilterStatusTodos(todos);
+  //       }
+  //       console.log(filterPriorityTodos, filterStatusTodos);
+  //       switch (filterPriority) {
+  //         case "High":
+  //           setFilterPriorityTodos(
+  //             filterStatusTodos.filter((todo) => todo.priority == "High")
+  //           );
+  //           break;
+  //         case "Middle":
+  //           setFilterPriorityTodos(
+  //             filterStatusTodos.filter((todo) => todo.priority == "Middle")
+  //           );
+  //           break;
+  //         case "Low":
+  //           setFilterPriorityTodos(
+  //             filterStatusTodos.filter((todo) => todo.priority == "Low")
+  //           );
+  //           break;
+  //         default:
+  //           setFilterPriorityTodos(filterStatusTodos);
+  //       }
+  //       setFilteredTodos(filterPriorityTodos);
+  //     } else if (filterStatus !== "") {
+  //       switch (filterStatus) {
+  //         case "NOT STARTED":
+  //           setFilterStatusTodos(
+  //             todos.filter((todo) => todo.status === "NOT STARTED")
+  //           );
+  //           break;
+  //         case "DOING":
+  //           setFilterStatusTodos(
+  //             todos.filter((todo) => todo.status === "DOING")
+  //           );
+  //           break;
+  //         case "DONE":
+  //           setFilterStatusTodos(
+  //             todos.filter((todo) => todo.status === "DONE")
+  //           );
+  //           break;
+  //         default:
+  //           setFilterStatusTodos(todos);
+  //       }
+  //       setFilteredTodos([...filterStatusTodos]);
+  //     } else if (filterPriority !== "") {
+  //       switch (filterPriority) {
+  //         case "High":
+  //           setFilterPriorityTodos(
+  //             todos.filter((todo) => todo.priority === "High")
+  //           );
+  //           break;
+  //         case "Middle":
+  //           setFilterPriorityTodos(
+  //             todos.filter((todo) => todo.priority === "Middle")
+  //           );
+  //           break;
+  //         case "Low":
+  //           setFilterPriorityTodos(
+  //             todos.filter((todo) => todo.priority === "Low")
+  //           );
+  //           break;
+  //         default:
+  //           setFilterPriorityTodos(todos);
+  //       }
+  //       setFilteredTodos([...filterPriorityTodos]);
+  //     } else {
+  //       console.log(filterPriorityTodos, filterStatusTodos);
+  //       setFilteredTodos(todos);
+  //     }
+  //   };
+  //   filteringTodos();
+  // }, [filterStatus, filterPriority, todos]);
 
   const handleEdit = async (selectedId: string) => {
     const docRef = doc(db, "todos", selectedId);
@@ -228,7 +275,7 @@ const TodoList: React.FC<TodoListProps> = ({filterStatus, filterPriority}) => {
           </tr>
         </thead>
         <tbody>
-          {filteredTodos.map((todo: Todo) => {
+          {displayTodo.map((todo: Todo) => {
             const todoInfo: Todo = {
               id: todo.id,
               title: todo.title,
