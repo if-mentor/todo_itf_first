@@ -3,7 +3,7 @@ import { EditTodoPage } from "@/components/fillOutPage/EditTodoPage";
 import { FillOutPageTop } from "@/components/fillOutPage/FillOutPageTop";
 import React from "react";
 
-const edit = () => {
+const Edit = () => {
   return (
     <div>
       <AuthProvider>
@@ -14,4 +14,4 @@ const edit = () => {
   );
 };
 
-export default edit;
+export default Edit;

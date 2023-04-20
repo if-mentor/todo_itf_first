@@ -2,7 +2,7 @@ import { NewTodoPage } from "@/components/fillOutPage/NewTodoPage";
 import { FillOutPageTop } from "@/components/fillOutPage/FillOutPageTop";
 import { AuthProvider } from "@/components/AuthContext";
 
-const create = () => {
+const Create = () => {
   return (
     <div>
       <AuthProvider>
@@ -13,4 +13,4 @@ const create = () => {
   );
 };
 
-export default create;
+export default Create;
