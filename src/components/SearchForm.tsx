@@ -1,30 +1,47 @@
 import Link from "next/link"
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Todo } from "./TodoList";
 
 export type FilterStatus = "NOT STARTED" | "DOING" | "DONE" | "";
 export type FilterPriority = "High" | "Middle" | "Low" | "";
 
 export type SearchProps = {
+  todos: Todo[];
   filterStatus: FilterStatus;
   setFilterStatus: Dispatch<SetStateAction<FilterStatus>>;
   filterPriority: FilterPriority;
   setFilterPriority: Dispatch<SetStateAction<FilterPriority>>;
+  filteredTodos: Todo[];
+  setFilteredTodos: Dispatch<SetStateAction<Todo[]>>
 }
 
-const SearchForm: React.FC<SearchProps> = ({filterStatus, setFilterStatus, filterPriority, setFilterPriority}) => {
-  
-const FILTERSTATUSOPTIONS = [
-  {value: "", title: "----------"},
-  {value: "NOT STARTED", title: "NOT STARTED"},
-  {value: "DOING", title: "DOING"},
-  {value: "DONE", title: "DONE"} 
-]
-const FILTERPRIORITYOPTIONS = [
-  {value: "", title: "----------"},
-  {value: "High", title: "High"},
-  {value: "Middle", title: "Middle"},
-  {value: "Low", title: "Low"} 
-]
+const SearchForm: React.FC<SearchProps> = (props) => {
+  const {todos, filterStatus, setFilterStatus, filterPriority, setFilterPriority, filteredTodos, setFilteredTodos} = props;
+  const FILTERSTATUSOPTIONS = [
+    {value: "", title: "----------"},
+    {value: "NOT STARTED", title: "NOT STARTED"},
+    {value: "DOING", title: "DOING"},
+    {value: "DONE", title: "DONE"} 
+  ];
+  const FILTERPRIORITYOPTIONS = [
+    {value: "", title: "----------"},
+    {value: "High", title: "High"},
+    {value: "Middle", title: "Middle"},
+    {value: "Low", title: "Low"} 
+  ];
+
+  const [searchWord, setSearchWord] =useState('');
+
+  const handleSearch = () => {
+    setFilteredTodos(filteredTodos.filter((todo) => todo.title.includes(searchWord)));
+  }
+ 
+  const handleReset = () => {
+    setFilterStatus('');
+    setFilterPriority('');
+    setFilteredTodos(todos);
+    setSearchWord('');
+  }
 
   return (
     <div className="w-full font-bold">
@@ -55,10 +72,11 @@ const FILTERPRIORITYOPTIONS = [
             <input
               type="text"
               placeholder="Text"
-              onChange={(e) => e.target.value}
+              value={searchWord}
+              onChange={(e) => setSearchWord(e.target.value)}
               className="outline-none"
             />
-            <button>
+            <button onClick={handleSearch}>
               <svg
                 className="h-4 w-4 text-gray-400"
                 viewBox="00 0 25 20"
@@ -96,7 +114,9 @@ const FILTERPRIORITYOPTIONS = [
         </div>
         <div className="border-solid">
           <br></br>
-          <button className="border border-solid border-black rounded-full px-5 py-0.5 bg-slate-400">
+          <button className="border border-solid border-black rounded-full px-5 py-0.5 bg-slate-400"
+            onClick={handleReset}
+          >
             RESET
           </button>
         </div>
