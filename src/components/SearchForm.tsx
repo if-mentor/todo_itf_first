@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Todo } from "./TodoList";
 
 export type FilterStatus = "NOT STARTED" | "DOING" | "DONE" | "";
