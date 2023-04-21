@@ -34,6 +34,7 @@ const SearchForm: React.FC<SearchProps> = (props) => {
 
   const handleSearch = () => {
     setFilteredTodos(filteredTodos.filter((todo) => todo.title.includes(searchWord)));
+    setSearchWord('');
   }
  
   const handleReset = () => {
