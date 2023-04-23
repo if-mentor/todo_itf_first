@@ -28,7 +28,6 @@ type TodoListProps = {
 
 const TodoList: React.FC<TodoListProps> = ({ filteredTodos }) => {
   const router = useRouter();
-  const [defaultState, setDefaultState] = useState(false);
 
   const handleEdit = async (selectedId: string) => {
     const docRef = doc(db, "todos", selectedId);

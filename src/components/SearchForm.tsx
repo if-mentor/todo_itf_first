@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 
 export type FilterStatus = "NOT STARTED" | "DOING" | "DONE" | "";
 export type FilterPriority = "High" | "Middle" | "Low" | "";
-
 export type SearchProps = {
   todos: Todo[];
   filterStatus: FilterStatus;
@@ -41,8 +40,6 @@ const SearchForm: React.FC<SearchProps> = (props) => {
   ];
 
   const [searchWord, setSearchWord] = useState("");
-  const [draftState, setDraftState] = useState(false);
-  const [draftContent, setDraftcontent] = useState([]);
   const router = useRouter();
 
   const handleCreate = () => {
@@ -59,7 +56,7 @@ const SearchForm: React.FC<SearchProps> = (props) => {
     content === undefined
       ? router.push("/create")
       : router.push({
-          pathname: "draft",
+          pathname: "/draft",
           query: content,
         });
   };
