@@ -3,9 +3,11 @@ import { Todo } from "./TodoList";
 import { CreateButton } from "./commonParts/CreateButton";
 import { SearchButton } from "./commonParts/SearchButton";
 import { useRouter } from "next/router";
+import Modal from "./Modal";
 
 export type FilterStatus = "NOT STARTED" | "DOING" | "DONE" | "";
 export type FilterPriority = "High" | "Middle" | "Low" | "";
+
 export type SearchProps = {
   todos: Todo[];
   filterStatus: FilterStatus;
@@ -47,10 +49,10 @@ const SearchForm: React.FC<SearchProps> = (props) => {
       if (todo.draft)
         return {
           id: todo.id,
-          priority: todo.priority,
-          detail: todo.detail,
-          draft: todo.draft,
           title: todo.title,
+          detail: todo.detail,
+          priority: todo.priority,
+          draft: todo.draft,
         };
     });
     content === undefined

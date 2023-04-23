@@ -21,23 +21,7 @@ export const DraftTodoPage = () => {
     setTodo((prevForm) => ({ ...prevForm, priority: e.target.value }));
   };
 
-  const handleDraft = async () => {
-    if (getData.id !== undefined) {
-      const selectedId = getData.id as string;
-      const docRef = doc(db, "todos", selectedId);
-      const payload = {
-        priority: todo.selectedPriority,
-        title: todo.todoTitle,
-        detail: todo.todoDetail,
-        updated_at: new Date(),
-        draft: true,
-      };
-      await updateDoc(docRef, payload);
-      router.push("/");
-    }
-  };
-
-  const handleCreate = async () => {
+  const handleCreate = async (draftJudge: boolean) => {
     if (getData.id !== undefined) {
       const selectedId = getData.id as string;
       const docRef = doc(db, "todos", selectedId);
@@ -46,7 +30,7 @@ export const DraftTodoPage = () => {
         title: todo.title,
         detail: todo.detail,
         updated_at: new Date(),
-        draft: false,
+        draft: draftJudge,
       };
       await updateDoc(docRef, payload);
       router.push("/");
@@ -97,10 +81,16 @@ export const DraftTodoPage = () => {
           </div>
         </div>
         <div className="text-2xl max-w-5xl mx-auto p-2 flex justify-end">
-          <button onClick={handleDraft} className={lightpinkButton}>
+          <button
+            onClick={() => handleCreate(true)}
+            className={lightpinkButton}
+          >
             DRAFT
           </button>
-          <button onClick={handleCreate} className={deepGreenButton}>
+          <button
+            onClick={() => handleCreate(false)}
+            className={deepGreenButton}
+          >
             CREATE
           </button>
         </div>
