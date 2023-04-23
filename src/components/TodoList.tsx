@@ -37,16 +37,20 @@ export type Todo = {
 type TodoListProps = {
   filterStatus: FilterStatus;
   filterPriority: FilterPriority;
-}
-const TodoList: React.FC<TodoListProps> = ({filterStatus, filterPriority}) => {
+};
+const TodoList: React.FC<TodoListProps> = ({
+  filterStatus,
+  filterPriority,
+}) => {
   const router = useRouter();
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [filteredTodos, setFilteredTodos] = useState<Todo[]>([])
+  const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
+  const [draftJudge, setDraftJudge] = useState(false);
 
   const formatDate = (date: Timestamp) => {
     const toDatedDate = date.toDate();
     return dayjs(toDatedDate).format("YYYY-MM-DD HH:mm");
-  }
+  };
 
   useEffect(() => {
     const q = query(collection(db, "todos"), orderBy("created_at"));
@@ -61,26 +65,36 @@ const TodoList: React.FC<TodoListProps> = ({filterStatus, filterPriority}) => {
             priority: doc.data().priority as "High" | "Middle" | "Low",
             draft: doc.data().draft as boolean,
             created_at: formatDate(doc.data().created_at),
-            updated_at: formatDate(doc.data().updated_at)
+            updated_at: formatDate(doc.data().updated_at),
           };
         })
       );
     });
-  },[]);
+  }, []);
+
+  useEffect(() => {
+    const judgeResult = todos.find((todo) => todo.draft === true);
+    judgeResult && setDraftJudge(true);
+    console.log(draftJudge);
+  }, [todos]);
 
   useEffect(() => {
     if (filterStatus && filterPriority) {
       const result = todos
-      .filter((compareStatus) => compareStatus.status === filterStatus)
-      .filter((comparePriority) => comparePriority.priority === filterPriority);
+        .filter((compareStatus) => compareStatus.status === filterStatus)
+        .filter(
+          (comparePriority) => comparePriority.priority === filterPriority
+        );
       setFilteredTodos(result);
     } else if (!filterStatus && filterPriority) {
-      const result = todos
-      .filter((comparePriority) => comparePriority.priority === filterPriority);
+      const result = todos.filter(
+        (comparePriority) => comparePriority.priority === filterPriority
+      );
       setFilteredTodos(result);
     } else if (filterStatus && !filterPriority) {
-      const result = todos
-      .filter((compareStatus) => compareStatus.status === filterStatus);
+      const result = todos.filter(
+        (compareStatus) => compareStatus.status === filterStatus
+      );
       setFilteredTodos(result);
     } else {
       setFilteredTodos(todos);
@@ -178,8 +192,8 @@ const TodoList: React.FC<TodoListProps> = ({filterStatus, filterPriority}) => {
           </tr>
         </thead>
         <tbody>
-          {filteredTodos.map(({id, title, detail, status, priority, created_at, updated_at, draft}: Todo) => {
-            const todoInfo: Todo = {
+          {filteredTodos.map(
+            ({
               id,
               title,
               detail,
@@ -187,55 +201,66 @@ const TodoList: React.FC<TodoListProps> = ({filterStatus, filterPriority}) => {
               priority,
               created_at,
               updated_at,
-            };
-            if (!draft) {
-              return (
-                <tr className="border-b" key={id}>
-                  <td className="text-left py-3 w-[384px]">
-                    <p className="text-base w-[384px] truncate">
-                      <Link
-                        href={{
-                          pathname: `/todos/${id}`,
-                          query: todoInfo,
+              draft,
+            }: Todo) => {
+              const todoInfo: Todo = {
+                id,
+                title,
+                detail,
+                status,
+                priority,
+                created_at,
+                updated_at,
+              };
+              if (!draft) {
+                return (
+                  <tr className="border-b" key={id}>
+                    <td className="text-left py-3 w-[384px]">
+                      <p className="text-base w-[384px] truncate">
+                        <Link
+                          href={{
+                            pathname: `/todos/${id}`,
+                            query: todoInfo,
+                          }}
+                        >
+                          {title}
+                        </Link>
+                      </p>
+                    </td>
+                    <td>{SwitchButton(status, id)}</td>
+                    <td className="text-center">
+                      <select
+                        value={priority}
+                        key={created_at}
+                        className="border border-red-400 outline-none rounded-lg
+                      text-base p-2"
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                          const selectedPriority = e.target.value;
+                          handleChangePriority(selectedPriority, id);
                         }}
                       >
-                        {title}
-                      </Link>
-                    </p>
-                  </td>
-                  <td>{SwitchButton(status, id)}</td>
-                  <td className="text-center">
-                    <select
-                      value={priority}
-                      key={created_at}
-                      className="border border-red-400 outline-none rounded-lg
-                      text-base p-2"
-                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                        const selectedPriority = e.target.value;
-                        handleChangePriority(selectedPriority, id);
-                      }}
-                    >
-                      {["High", "Middle", "Low"].map((value) => (
-                        <option key={value} value={value}>
-                          {value}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                  <td className="text-sm text-center">{created_at}</td>
-                  <td className="text-sm text-center">{updated_at}</td>
-                  <td className=" text-center py-3">
-                    <button onClick={() => handleEdit(id)}>
-                      <EditPencilButton />
-                    </button>
-                    <button onClick={() => handleDelete(id)}>
-                      <DeleteTrashButton />
-                    </button>
-                  </td>
-                </tr>
-              );
+                        {["High", "Middle", "Low"].map((value) => (
+                          <option key={value} value={value}>
+                            {value}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td className="text-sm text-center">{created_at}</td>
+                    <td className="text-sm text-center">{updated_at}</td>
+                    <td className=" text-center py-3">
+                      <button onClick={() => handleEdit(id)}>
+                        <EditPencilButton />
+                      </button>
+                      <button onClick={() => handleDelete(id)}>
+                        <DeleteTrashButton />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              }
             }
-          })}
+          )}
         </tbody>
       </table>
     </div>

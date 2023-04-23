@@ -1,36 +1,51 @@
-import Link from "next/link"
+import Link from "next/link";
 import { Dispatch, SetStateAction } from "react";
+
+export type DraftJudge = true | false;
 
 export type FilterStatus = "NOT STARTED" | "DOING" | "DONE" | "";
 export type FilterPriority = "High" | "Middle" | "Low" | "";
 
 export type SearchProps = {
+  draftJudge: DraftJudge;
+  setDraftJudge: Dispatch<SetStateAction<DraftJudge>>;
   filterStatus: FilterStatus;
   setFilterStatus: Dispatch<SetStateAction<FilterStatus>>;
   filterPriority: FilterPriority;
   setFilterPriority: Dispatch<SetStateAction<FilterPriority>>;
-}
+};
 
-const SearchForm: React.FC<SearchProps> = ({filterStatus, setFilterStatus, filterPriority, setFilterPriority}) => {
-  
-const FILTERSTATUSOPTIONS = [
-  {value: "", title: "----------"},
-  {value: "NOT STARTED", title: "NOT STARTED"},
-  {value: "DOING", title: "DOING"},
-  {value: "DONE", title: "DONE"} 
-]
-const FILTERPRIORITYOPTIONS = [
-  {value: "", title: "----------"},
-  {value: "High", title: "High"},
-  {value: "Middle", title: "Middle"},
-  {value: "Low", title: "Low"} 
-]
+const SearchForm: React.FC<SearchProps> = ({
+  filterStatus,
+  setFilterStatus,
+  filterPriority,
+  setFilterPriority,
+  draftJudge,
+  setDraftJudge,
+}) => {
+  const FILTERSTATUSOPTIONS = [
+    { value: "", title: "----------" },
+    { value: "NOT STARTED", title: "NOT STARTED" },
+    { value: "DOING", title: "DOING" },
+    { value: "DONE", title: "DONE" },
+  ];
+  const FILTERPRIORITYOPTIONS = [
+    { value: "", title: "----------" },
+    { value: "High", title: "High" },
+    { value: "Middle", title: "Middle" },
+    { value: "Low", title: "Low" },
+  ];
+
+  const handleCreate = () => {
+    console.log(draftJudge);
+  };
 
   return (
     <div className="w-full font-bold">
       <div className="text-[28px] max-w-5xl mx-auto py-2 flex justify-between">
         <h2>TODO LIST</h2>
-        <Link href="/create">
+
+        <Link href="/create" onClick={() => handleCreate}>
           <div className="border border-solid border-black rounded-full p-2 mt-5 bg-slate-300">
             <svg
               className="h-4 w-4 text-black"
@@ -81,7 +96,11 @@ const FILTERPRIORITYOPTIONS = [
             className="border border-solid border-black rounded-md px-5 py-0.5"
             onChange={(e) => setFilterStatus(e.target.value as FilterStatus)}
           >
-            {FILTERSTATUSOPTIONS.map(({value, title}) => <option value={value} key={title}>{title}</option>)}
+            {FILTERSTATUSOPTIONS.map(({ value, title }) => (
+              <option value={value} key={title}>
+                {title}
+              </option>
+            ))}
           </select>
         </div>
         <div>
@@ -89,9 +108,15 @@ const FILTERPRIORITYOPTIONS = [
           <select
             className="border border-solid border-black rounded-md px-4 py-0.5"
             value={filterPriority}
-            onChange={(e) => setFilterPriority(e.target.value as FilterPriority)}
+            onChange={(e) =>
+              setFilterPriority(e.target.value as FilterPriority)
+            }
           >
-            {FILTERPRIORITYOPTIONS.map(({value, title}) => <option value={value} key={title}>{title}</option>)}
+            {FILTERPRIORITYOPTIONS.map(({ value, title }) => (
+              <option value={value} key={title}>
+                {title}
+              </option>
+            ))}
           </select>
         </div>
         <div className="border-solid">
@@ -103,5 +128,5 @@ const FILTERPRIORITYOPTIONS = [
       </div>
     </div>
   );
-}
-export default SearchForm
+};
+export default SearchForm;

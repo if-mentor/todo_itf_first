@@ -1,5 +1,5 @@
-import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, ReactNode, useState } from 'react';
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment, ReactNode } from "react";
 
 type Props = {
   children: ReactNode;
@@ -8,7 +8,6 @@ type Props = {
 };
 
 const Modal = ({ isOpen, children, onClose }: Props) => {
-  
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog
