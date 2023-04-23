@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
+import { Todo } from "./TodoList";
 
 export type DraftJudge = true | false;
 
@@ -7,22 +8,25 @@ export type FilterStatus = "NOT STARTED" | "DOING" | "DONE" | "";
 export type FilterPriority = "High" | "Middle" | "Low" | "";
 
 export type SearchProps = {
-  draftJudge: DraftJudge;
-  setDraftJudge: Dispatch<SetStateAction<DraftJudge>>;
+  todos: Todo[];
   filterStatus: FilterStatus;
   setFilterStatus: Dispatch<SetStateAction<FilterStatus>>;
   filterPriority: FilterPriority;
   setFilterPriority: Dispatch<SetStateAction<FilterPriority>>;
+  filteredTodos: Todo[];
+  setFilteredTodos: Dispatch<SetStateAction<Todo[]>>;
 };
 
-const SearchForm: React.FC<SearchProps> = ({
-  filterStatus,
-  setFilterStatus,
-  filterPriority,
-  setFilterPriority,
-  draftJudge,
-  setDraftJudge,
-}) => {
+const SearchForm: React.FC<SearchProps> = (props) => {
+  const {
+    todos,
+    filterStatus,
+    setFilterStatus,
+    filterPriority,
+    setFilterPriority,
+    filteredTodos,
+    setFilteredTodos,
+  } = props;
   const FILTERSTATUSOPTIONS = [
     { value: "", title: "----------" },
     { value: "NOT STARTED", title: "NOT STARTED" },
@@ -36,8 +40,20 @@ const SearchForm: React.FC<SearchProps> = ({
     { value: "Low", title: "Low" },
   ];
 
-  const handleCreate = () => {
-    console.log(draftJudge);
+  const [searchWord, setSearchWord] = useState("");
+
+  const handleSearch = () => {
+    setFilteredTodos(
+      filteredTodos.filter((todo) => todo.title.includes(searchWord))
+    );
+    setSearchWord("");
+  };
+
+  const handleReset = () => {
+    setFilterStatus("");
+    setFilterPriority("");
+    setFilteredTodos(todos);
+    setSearchWord("");
   };
 
   return (
@@ -45,7 +61,7 @@ const SearchForm: React.FC<SearchProps> = ({
       <div className="text-[28px] max-w-5xl mx-auto py-2 flex justify-between">
         <h2>TODO LIST</h2>
 
-        <Link href="/create" onClick={() => handleCreate}>
+        <Link href="/create">
           <div className="border border-solid border-black rounded-full p-2 mt-5 bg-slate-300">
             <svg
               className="h-4 w-4 text-black"
@@ -70,10 +86,11 @@ const SearchForm: React.FC<SearchProps> = ({
             <input
               type="text"
               placeholder="Text"
-              onChange={(e) => e.target.value}
+              value={searchWord}
+              onChange={(e) => setSearchWord(e.target.value)}
               className="outline-none"
             />
-            <button>
+            <button onClick={handleSearch}>
               <svg
                 className="h-4 w-4 text-gray-400"
                 viewBox="00 0 25 20"
@@ -121,7 +138,10 @@ const SearchForm: React.FC<SearchProps> = ({
         </div>
         <div className="border-solid">
           <br></br>
-          <button className="border border-solid border-black rounded-full px-5 py-0.5 bg-slate-400">
+          <button
+            className="border border-solid border-black rounded-full px-5 py-0.5 bg-slate-400"
+            onClick={handleReset}
+          >
             RESET
           </button>
         </div>

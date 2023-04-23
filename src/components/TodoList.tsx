@@ -1,18 +1,6 @@
-import {
-  Timestamp,
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  onSnapshot,
-  orderBy,
-  query,
-  updateDoc,
-} from "firebase/firestore";
+import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { db } from "../../lib/firebase";
-import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { EditPencilButton } from "./commonParts/EditPencilButton";
 import { DeleteTrashButton } from "./commonParts/DeleteTrashButton";
@@ -21,7 +9,6 @@ import {
   statusDone,
   statusNotStarted,
 } from "./commonParts/ButtonClass";
-import { FilterPriority, FilterStatus } from "./SearchForm";
 
 export type Todo = {
   id: string;
@@ -35,71 +22,11 @@ export type Todo = {
 };
 
 type TodoListProps = {
-  filterStatus: FilterStatus;
-  filterPriority: FilterPriority;
+  filteredTodos: Todo[];
 };
-const TodoList: React.FC<TodoListProps> = ({
-  filterStatus,
-  filterPriority,
-}) => {
+
+const TodoList: React.FC<TodoListProps> = ({ filteredTodos }) => {
   const router = useRouter();
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
-  const [draftJudge, setDraftJudge] = useState(false);
-
-  const formatDate = (date: Timestamp) => {
-    const toDatedDate = date.toDate();
-    return dayjs(toDatedDate).format("YYYY-MM-DD HH:mm");
-  };
-
-  useEffect(() => {
-    const q = query(collection(db, "todos"), orderBy("created_at"));
-    onSnapshot(q, (snapshot) => {
-      setTodos(
-        snapshot.docs.map((doc) => {
-          return {
-            id: doc.id,
-            title: doc.data().title as string,
-            detail: doc.data().detail as string,
-            status: doc.data().status as "NOT STARTED" | "DOING" | "DONE",
-            priority: doc.data().priority as "High" | "Middle" | "Low",
-            draft: doc.data().draft as boolean,
-            created_at: formatDate(doc.data().created_at),
-            updated_at: formatDate(doc.data().updated_at),
-          };
-        })
-      );
-    });
-  }, []);
-
-  useEffect(() => {
-    const judgeResult = todos.find((todo) => todo.draft === true);
-    judgeResult && setDraftJudge(true);
-    console.log(draftJudge);
-  }, [todos]);
-
-  useEffect(() => {
-    if (filterStatus && filterPriority) {
-      const result = todos
-        .filter((compareStatus) => compareStatus.status === filterStatus)
-        .filter(
-          (comparePriority) => comparePriority.priority === filterPriority
-        );
-      setFilteredTodos(result);
-    } else if (!filterStatus && filterPriority) {
-      const result = todos.filter(
-        (comparePriority) => comparePriority.priority === filterPriority
-      );
-      setFilteredTodos(result);
-    } else if (filterStatus && !filterPriority) {
-      const result = todos.filter(
-        (compareStatus) => compareStatus.status === filterStatus
-      );
-      setFilteredTodos(result);
-    } else {
-      setFilteredTodos(todos);
-    }
-  }, [filterStatus, filterPriority, todos]);
 
   const handleEdit = async (selectedId: string) => {
     const docRef = doc(db, "todos", selectedId);
