@@ -1,9 +1,4 @@
-import {
-  deleteDoc,
-  doc,
-  getDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import Link from "next/link";
 import { db } from "../../lib/firebase";
 import { useRouter } from "next/router";
@@ -14,6 +9,7 @@ import {
   statusDone,
   statusNotStarted,
 } from "./commonParts/ButtonClass";
+import { useState } from "react";
 
 export type Todo = {
   id: string;
@@ -28,8 +24,9 @@ export type Todo = {
 
 type TodoListProps = {
   filteredTodos: Todo[];
-}
-const TodoList: React.FC<TodoListProps> = ({filteredTodos}) => {
+};
+
+const TodoList: React.FC<TodoListProps> = ({ filteredTodos }) => {
   const router = useRouter();
 
   const handleEdit = async (selectedId: string) => {
@@ -123,8 +120,8 @@ const TodoList: React.FC<TodoListProps> = ({filteredTodos}) => {
           </tr>
         </thead>
         <tbody>
-          {filteredTodos.map(({id, title, detail, status, priority, created_at, updated_at, draft}: Todo) => {
-            const todoInfo: Todo = {
+          {filteredTodos.map(
+            ({
               id,
               title,
               detail,
@@ -132,55 +129,66 @@ const TodoList: React.FC<TodoListProps> = ({filteredTodos}) => {
               priority,
               created_at,
               updated_at,
-            };
-            if (!draft) {
-              return (
-                <tr className="border-b" key={id}>
-                  <td className="text-left py-3 w-[384px]">
-                    <p className="text-base w-[384px] truncate">
-                      <Link
-                        href={{
-                          pathname: `/todos/${id}`,
-                          query: todoInfo,
+              draft,
+            }: Todo) => {
+              const todoInfo: Todo = {
+                id,
+                title,
+                detail,
+                status,
+                priority,
+                created_at,
+                updated_at,
+              };
+              if (!draft) {
+                return (
+                  <tr className="border-b" key={id}>
+                    <td className="text-left py-3 w-[384px]">
+                      <p className="text-base w-[384px] truncate">
+                        <Link
+                          href={{
+                            pathname: `/todos/${id}`,
+                            query: todoInfo,
+                          }}
+                        >
+                          {title}
+                        </Link>
+                      </p>
+                    </td>
+                    <td>{SwitchButton(status, id)}</td>
+                    <td className="text-center">
+                      <select
+                        value={priority}
+                        key={created_at}
+                        className="border border-red-400 outline-none rounded-lg
+                      text-base p-2"
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                          const selectedPriority = e.target.value;
+                          handleChangePriority(selectedPriority, id);
                         }}
                       >
-                        {title}
-                      </Link>
-                    </p>
-                  </td>
-                  <td>{SwitchButton(status, id)}</td>
-                  <td className="text-center">
-                    <select
-                      value={priority}
-                      key={created_at}
-                      className="border border-red-400 outline-none rounded-lg
-                      text-base p-2"
-                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                        const selectedPriority = e.target.value;
-                        handleChangePriority(selectedPriority, id);
-                      }}
-                    >
-                      {["High", "Middle", "Low"].map((value) => (
-                        <option key={value} value={value}>
-                          {value}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                  <td className="text-sm text-center">{created_at}</td>
-                  <td className="text-sm text-center">{updated_at}</td>
-                  <td className=" text-center py-3">
-                    <button onClick={() => handleEdit(id)}>
-                      <EditPencilButton />
-                    </button>
-                    <button onClick={() => handleDelete(id)}>
-                      <DeleteTrashButton />
-                    </button>
-                  </td>
-                </tr>
-              );
+                        {["High", "Middle", "Low"].map((value) => (
+                          <option key={value} value={value}>
+                            {value}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                    <td className="text-sm text-center">{created_at}</td>
+                    <td className="text-sm text-center">{updated_at}</td>
+                    <td className=" text-center py-3">
+                      <button onClick={() => handleEdit(id)}>
+                        <EditPencilButton />
+                      </button>
+                      <button onClick={() => handleDelete(id)}>
+                        <DeleteTrashButton />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              }
             }
-          })}
+          )}
         </tbody>
       </table>
     </div>

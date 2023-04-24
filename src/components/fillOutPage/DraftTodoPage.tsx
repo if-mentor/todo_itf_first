@@ -1,43 +1,40 @@
-import { addDoc, collection } from "firebase/firestore";
-import { useState } from "react";
-import { db } from "../../../lib/firebase";
 import { useRouter } from "next/router";
 import { deepGreenButton, lightpinkButton } from "../commonParts/ButtonClass";
 import { inputClass, textareaClass } from "../commonParts/fillOutClass";
+import { useState } from "react";
+import { db } from "../../../lib/firebase";
+import { doc, updateDoc } from "firebase/firestore";
 
-export const NewTodoPage = () => {
+export const DraftTodoPage = () => {
   const router = useRouter();
-
-  const [form, setForm] = useState({
-    todoTitle: "",
-    todoDetail: "",
-    selectedPriority: "",
-  });
+  const getData = router.query;
+  const [todo, setTodo] = useState(getData);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setForm((prevForm) => ({ ...prevForm, [name]: value }));
+    setTodo((prevForm) => ({ ...prevForm, [name]: value }));
   };
 
   const handlePriorityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm((prevForm) => ({ ...prevForm, selectedPriority: e.target.value }));
+    setTodo((prevForm) => ({ ...prevForm, priority: e.target.value }));
   };
 
   const handleCreate = async (draftJudge: boolean) => {
-    const docRef = collection(db, "todos");
-    const payload = {
-      status: "NOT STARTED",
-      priority: form.selectedPriority,
-      title: form.todoTitle,
-      detail: form.todoDetail,
-      created_at: new Date(),
-      updated_at: new Date(),
-      draft: draftJudge,
-    };
-    await addDoc(docRef, payload);
-    router.push("/");
+    if (getData.id !== undefined) {
+      const selectedId = getData.id as string;
+      const docRef = doc(db, "todos", selectedId);
+      const payload = {
+        priority: todo.priority,
+        title: todo.title,
+        detail: todo.detail,
+        updated_at: new Date(),
+        draft: draftJudge,
+      };
+      await updateDoc(docRef, payload);
+      router.push("/");
+    }
   };
 
   return (
@@ -49,20 +46,20 @@ export const NewTodoPage = () => {
             type="text"
             placeholder="Text"
             className={inputClass}
-            name="todoTitle"
-            value={form.todoTitle}
+            name="title"
+            value={todo.title}
             onChange={handleChange}
           />
         </div>
         <div className="max-w-5xl mx-auto p-2">
           <label className="text-2xl">DETAIL</label>
           <textarea
-            name="todoDetail"
+            name="detail"
             id="text"
             rows={10}
             placeholder=" Text"
             className={textareaClass}
-            value={form.todoDetail}
+            value={todo.detail}
             onChange={handleChange}
           ></textarea>
         </div>
@@ -73,8 +70,9 @@ export const NewTodoPage = () => {
               <label key={priority} className="pl-3 pr-6">
                 <input
                   type="radio"
-                  name="selectedPriority"
+                  name="priority"
                   value={priority}
+                  checked={priority == todo.priority}
                   onChange={handlePriorityChange}
                 />
                 {priority}
