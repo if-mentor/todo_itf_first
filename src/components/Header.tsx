@@ -4,7 +4,7 @@ import { auth } from '../../lib/firebase'
 import { signOut } from 'firebase/auth'
 
 const Header = () => {
-  const [user, setUser] = useState<string|null>('GuestAccount');
+  const [user, setUser] = useState<string|null>('');
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {
@@ -28,7 +28,7 @@ const Header = () => {
         <div className='text-xl mt-2.5'>
           {user !== 'GuestAccount'?(
             <div>
-              <button onClick={handleLogOut} className='border border-black rounded-full px-5 py-0.5 bg-white'>Logout</button>
+              <button onClick={handleLogOut} className='border border-black rounded-full px-5 py-0.5 mr-60 bg-white'>Logout</button>
               <div className= 'ml-3 mt-1'>{user}</div>
             </div>    
           ):(
