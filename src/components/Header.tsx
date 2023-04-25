@@ -4,7 +4,7 @@ import { auth } from '../../lib/firebase'
 import { signOut } from 'firebase/auth'
 
 const Header = () => {
-  const [user, setUser] = useState<string|null>('GuestAccount');
+  const [user, setUser] = useState<string|null>('');
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {
