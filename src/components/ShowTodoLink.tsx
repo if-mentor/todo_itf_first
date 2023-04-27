@@ -21,14 +21,17 @@ const ShowTodoLink: React.FC<Todo> = ({todoId}) => {
   const handleCreateComment = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const docRef = collection(db, "comments");
-    const payload = {
-      todoId: currentTodoId,
-      name: name,
-      content: content,
-      created_at: new Date()
+    if (name && content) {
+      const payload = {
+        todoId: currentTodoId,
+        name: name,
+        content: content,
+        created_at: new Date()
+      }
+      await addDoc(docRef, payload);
+      setIsOpen(false)
     }
-    await addDoc(docRef, payload);
-    setIsOpen(false)
+    
   }
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
