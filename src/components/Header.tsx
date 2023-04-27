@@ -41,13 +41,13 @@ const Header = () => {
             <div>
               <Link
                 href="/login"
-                className="border border-black rounded-full px-5 py-0.5 bg-white"
+                className="border border-black rounded-full px-5 py-0.5  bg-white"
               >
                 LogIn
               </Link>
               <Link
                 href="/signup"
-                className="border border-black rounded-full px-5 py-0.5 ml-5 bg-white"
+                className="border border-black rounded-full px-5 py-0.5 ml-5 mr-60 bg-white"
               >
                 SignUp
               </Link>
