@@ -3,7 +3,6 @@ import { Todo } from "./TodoList";
 import { CreateButton } from "./commonParts/CreateButton";
 import { SearchButton } from "./commonParts/SearchButton";
 import { useRouter } from "next/router";
-import Modal from "./Modal";
 
 export type FilterStatus = "NOT STARTED" | "DOING" | "DONE" | "";
 export type FilterPriority = "High" | "Middle" | "Low" | "";
@@ -81,7 +80,6 @@ const SearchForm: React.FC<SearchProps> = (props) => {
     <div className="w-full font-bold">
       <div className="text-[28px] max-w-5xl mx-auto py-2 flex justify-between">
         <h2>TODO LIST</h2>
-
         <button onClick={() => handleCreate()}>
           <CreateButton />
         </button>
